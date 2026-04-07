@@ -156,8 +156,13 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
             dragging: true
         });
 
-        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri',
+        // Use dark tiles if theme is dark
+        const tileUrl = theme === 'dark' 
+            ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+            : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+
+        L.tileLayer(tileUrl, {
+            attribution: theme === 'dark' ? '&copy; OpenStreetMap &copy; CARTO' : 'Tiles &copy; Esri',
             maxZoom: 19
         }).addTo(map);
 
@@ -170,7 +175,7 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
                     <div class="relative flex items-center justify-center w-10 h-10 transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer transition-transform duration-300 hover:scale-110">
                         <span class="absolute inset-0 rounded-full bg-white animate-ping opacity-40"></span>
                         <span class="absolute inset-[-4px] rounded-full bg-[#A18058] opacity-20 group-hover:opacity-40 transition-opacity"></span>
-                        <div class="relative flex items-center justify-center w-9 h-9 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-md border-2 border-white transition-all duration-300 bg-[#1C1917] text-white hover:bg-[#A18058] hover:border-white">
+                        <div class="relative flex items-center justify-center w-9 h-9 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-md border-2 border-white transition-all duration-300 bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[#A18058] hover:border-white">
                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                         </div>
                     </div>
@@ -216,35 +221,75 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
   }, [activeId]);
 
   return (
-    <section id="map-explorer" className="py-24 bg-[#FAFAF9] relative scroll-mt-20">
-      <style>{`.custom-leaflet-tooltip { background: rgba(255, 255, 255, 0.95); border: 1px solid #e7e5e4; border-radius: 12px; padding: 8px 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); font-family: 'Inter', sans-serif; } .custom-leaflet-tooltip:before { border-top-color: rgba(255, 255, 255, 0.95); } .leaflet-container { background: #0d1b2a; }`}</style>
+    <section id="map-explorer" className="py-24 bg-[var(--bg-primary)] relative scroll-mt-20 transition-colors duration-500">
+      <style>{`
+        .custom-leaflet-tooltip { 
+          background: var(--bg-secondary); 
+          border: 1px solid var(--border-primary); 
+          border-radius: 12px; 
+          padding: 8px 12px; 
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); 
+          font-family: 'Inter', sans-serif; 
+          color: var(--text-primary);
+        } 
+        .custom-leaflet-tooltip:before { border-top-color: var(--bg-secondary); } 
+        .leaflet-container { background: #000 !important; }
+      `}</style>
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-          <div><span className="text-[#A18058] font-bold tracking-[0.2em] text-[10px] uppercase mb-4 block flex items-center gap-2"><span className="w-10 h-[1px] bg-[#A18058]"></span>Visuale Satellitare</span><h2 className="text-4xl md:text-6xl text-stone-900 font-serif leading-tight">I colori <span className="italic text-stone-500">della costa.</span></h2></div>
-          <p className="max-w-md text-stone-500 font-light text-sm mt-6 md:mt-0 leading-relaxed text-right">Osserva la Sardegna come non l'hai mai vista. <br/>Dalle acque cristalline di <strong>Cala Brandinchi</strong> ai promontori di <strong>Porto Cervo</strong>.</p>
+          <div>
+            <span className="text-[#A18058] font-bold tracking-[0.2em] text-[10px] uppercase mb-4 block flex items-center gap-2">
+              <span className="w-10 h-[1px] bg-[#A18058]"></span>
+              Visuale Satellitare
+            </span>
+            <h2 className="text-4xl md:text-6xl text-[var(--text-primary)] font-serif leading-tight">
+              I colori <span className="italic text-[var(--text-tertiary)]">della costa.</span>
+            </h2>
+          </div>
+          <p className="max-w-md text-[var(--text-secondary)] font-light text-sm mt-6 md:mt-0 leading-relaxed text-right">
+            Osserva la Sardegna come non l'hai mai vista. <br/>
+            Dalle acque cristalline di <strong>Cala Brandinchi</strong> ai promontori di <strong>Porto Cervo</strong>.
+          </p>
         </div>
 
-        <div className="relative h-[85vh] w-full rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/50 bg-stone-900 group">
+        <div className="relative h-[85vh] w-full rounded-[2.5rem] overflow-hidden shadow-2xl border border-[var(--border-primary)] bg-black group">
           <div ref={mapContainerRef} className="absolute inset-0 z-0 w-full h-full" id="map-leaflet"></div>
           <div className="absolute inset-0 bg-black/5 pointer-events-none z-[1]"></div>
+          
           <div className="absolute right-6 top-6 flex flex-col gap-2 z-10">
-             <div onClick={() => mapRef.current?.flyTo([40.82, 9.68], 11.5)} className="w-10 h-10 bg-white/90 backdrop-blur rounded-xl shadow-lg flex items-center justify-center text-stone-700 hover:bg-white cursor-pointer"><Compass size={20} strokeWidth={1.5} /></div>
+             <div onClick={() => mapRef.current?.flyTo([40.82, 9.68], 11.5)} className="w-10 h-10 bg-[var(--bg-secondary)] backdrop-blur rounded-xl shadow-lg flex items-center justify-center text-[var(--text-primary)] hover:bg-[#A18058] hover:text-white cursor-pointer transition-all"><Compass size={20} strokeWidth={1.5} /></div>
              <div className="h-4"></div>
-             <div onClick={() => mapRef.current?.zoomIn()} className="w-10 h-10 bg-white/90 backdrop-blur rounded-t-xl border-b border-stone-100 shadow-lg flex items-center justify-center text-stone-700 hover:bg-white cursor-pointer"><Plus size={20} /></div>
-             <div onClick={() => mapRef.current?.zoomOut()} className="w-10 h-10 bg-white/90 backdrop-blur rounded-b-xl shadow-lg flex items-center justify-center text-stone-700 hover:bg-white cursor-pointer"><Minus size={20} /></div>
+             <div onClick={() => mapRef.current?.zoomIn()} className="w-10 h-10 bg-[var(--bg-secondary)] backdrop-blur rounded-t-xl border-b border-[var(--border-primary)] shadow-lg flex items-center justify-center text-[var(--text-primary)] hover:bg-[#A18058] hover:text-white cursor-pointer transition-all"><Plus size={20} /></div>
+             <div onClick={() => mapRef.current?.zoomOut()} className="w-10 h-10 bg-[var(--bg-secondary)] backdrop-blur rounded-b-xl shadow-lg flex items-center justify-center text-[var(--text-primary)] hover:bg-[#A18058] hover:text-white cursor-pointer transition-all"><Minus size={20} /></div>
           </div>
-          <div className="absolute top-6 left-6 z-10 hidden md:block"><div className="bg-white/80 backdrop-blur-xl border border-white/60 p-2 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex gap-2 max-w-md w-full"><div className="flex-1 px-4 py-2 border-r border-stone-200/50"><label className="block text-[9px] font-bold text-[#A18058] uppercase tracking-widest mb-1">Località</label><div className="flex items-center gap-2"><MapPin size={14} className="text-stone-400" /><span className="text-sm font-medium text-stone-900">Costa Smeralda & Gallura</span></div></div><button className="bg-[#1C1917] text-white rounded-xl px-4 flex items-center justify-center hover:bg-[#A18058] transition-colors"><Search size={18} /></button></div></div>
+
           <div className="absolute bottom-0 left-0 w-full p-6 z-10 flex gap-4 overflow-x-auto pb-8 custom-scrollbar snap-x">
                {properties.map((prop) => (
-                   <div key={prop.id} onClick={() => handlePinClick(prop)} className={`snap-center shrink-0 w-[280px] md:w-[320px] bg-white/95 backdrop-blur-xl rounded-[2rem] p-3 border transition-all duration-300 cursor-pointer hover:shadow-2xl shadow-lg ${activeId === prop.id ? 'border-[#A18058] ring-1 ring-[#A18058]/20 bg-white' : 'border-white/60 hover:border-stone-200'}`}>
+                   <div 
+                    key={prop.id} 
+                    onClick={() => handlePinClick(prop)} 
+                    className={`snap-center shrink-0 w-[280px] md:w-[320px] bg-[var(--bg-secondary)] backdrop-blur-xl rounded-[2rem] p-3 border transition-all duration-300 cursor-pointer hover:shadow-2xl shadow-lg ${activeId === prop.id ? 'border-[#A18058] ring-1 ring-[#A18058]/20' : 'border-[var(--border-primary)] hover:border-stone-400'}`}
+                   >
                       <div className="flex gap-4">
-                          <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 relative"><img src={prop.image} className="w-full h-full object-cover" alt={prop.title} /><div className="absolute top-1 left-1 bg-black/50 backdrop-blur text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest">{prop.rating} ★</div></div>
+                          <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 relative">
+                            <img src={prop.image} className="w-full h-full object-cover" alt={prop.title} />
+                            <div className="absolute top-1 left-1 bg-black/50 backdrop-blur text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest">{prop.rating} ★</div>
+                          </div>
                           <div className="flex flex-col justify-center flex-1 min-w-0">
-                              <h3 className="font-serif text-lg text-stone-900 truncate pr-2">{prop.title}</h3>
-                              <p className="text-[10px] text-stone-500 font-medium uppercase tracking-wide truncate mb-2">{prop.location}</p>
-                              <div className="flex items-center gap-3 text-stone-400 text-[10px] font-bold"><span className="flex items-center gap-1"><BedDouble size={12} /> {prop.beds}</span><span className="w-px h-3 bg-stone-300"></span><span className="flex items-center gap-1"><Maximize size={12} /> {prop.sqm}</span></div>
-                              <div className="mt-2 pt-2 border-t border-stone-100 flex justify-between items-center"><span className="text-xs font-serif text-[#1C1917]">{prop.price}</span><div className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${activeId === prop.id ? 'bg-[#A18058] text-white' : 'bg-stone-100 text-stone-400'}`}><ArrowRight size={14} /></div></div>
+                              <h3 className="font-serif text-lg text-[var(--text-primary)] truncate pr-2">{prop.title}</h3>
+                              <p className="text-[10px] text-[var(--text-secondary)] font-medium uppercase tracking-wide truncate mb-2">{prop.location}</p>
+                              <div className="flex items-center gap-3 text-[var(--text-tertiary)] text-[10px] font-bold">
+                                <span className="flex items-center gap-1"><BedDouble size={12} /> {prop.beds}</span>
+                                <span className="w-px h-3 bg-[var(--border-primary)]"></span>
+                                <span className="flex items-center gap-1"><Maximize size={12} /> {prop.sqm}</span>
+                              </div>
+                              <div className="mt-2 pt-2 border-t border-[var(--border-primary)] flex justify-between items-center">
+                                <span className="text-xs font-serif text-[var(--text-primary)]">{prop.price}</span>
+                                <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${activeId === prop.id ? 'bg-[#A18058] text-white' : 'bg-[var(--bg-tertiary)] text-[var(--text-tertiary)]'}`}>
+                                  <ArrowRight size={14} />
+                                </div>
+                              </div>
                           </div>
                       </div>
                    </div>
@@ -255,20 +300,20 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
 
       {selectedProp && (
         <div className={`fixed inset-0 z-[60] flex justify-end transition-opacity duration-500 ${showDetail ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-             <div className="absolute inset-0 bg-[#1C1917]/60 backdrop-blur-sm" onClick={closeDetail}></div>
-             <div className={`relative w-full md:w-[600px] h-full bg-white shadow-2xl flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${showDetail ? 'translate-x-0' : 'translate-x-full'}`}>
+             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeDetail}></div>
+             <div className={`relative w-full md:w-[600px] h-full bg-[var(--bg-secondary)] shadow-2xl flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${showDetail ? 'translate-x-0' : 'translate-x-full'}`}>
                 <button onClick={closeDetail} className="absolute top-6 right-6 z-20 w-10 h-10 bg-white/20 backdrop-blur-md hover:bg-white rounded-full flex items-center justify-center text-white hover:text-[#1C1917] transition-all duration-300"><X size={20} /></button>
                 <div className="h-[40%] relative shrink-0"><img src={selectedProp.image} alt={selectedProp.title} className="w-full h-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div><div className="absolute bottom-0 left-0 p-8 text-white"><div className="inline-block px-3 py-1 bg-[#A18058] text-white text-[10px] font-bold uppercase tracking-widest rounded-sm mb-3">{selectedProp.price.includes('Affitto') ? 'Affitto' : 'In Vendita'}</div><h2 className="text-4xl font-serif mb-2">{selectedProp.title}</h2><p className="text-white/80 flex items-center gap-2 text-sm font-medium"><MapPin size={16} /> {selectedProp.location}</p></div></div>
                 <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-                    <div className="flex items-center justify-between mb-8 border-b border-stone-100 pb-8"><div><p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-1">Prezzo</p><p className="text-2xl font-serif text-[#1C1917]">{selectedProp.price}</p></div><div className="flex gap-6"><div className="text-center"><p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-1">Camere</p><div className="flex items-center gap-1 justify-center text-stone-800 font-medium"><BedDouble size={16}/> {selectedProp.beds}</div></div><div className="text-center"><p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-1">Bagni</p><div className="flex items-center gap-1 justify-center text-stone-800 font-medium"><Bath size={16}/> {selectedProp.baths}</div></div><div className="text-center"><p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-1">Superficie</p><div className="flex items-center gap-1 justify-center text-stone-800 font-medium"><Maximize size={16}/> {selectedProp.sqm}</div></div></div></div>
-                    <div className="mb-8"><h3 className="text-lg font-serif text-[#1C1917] mb-4">Descrizione</h3><p className="text-stone-500 font-light leading-relaxed text-sm">{selectedProp.description}</p></div>
-                    <div className="mb-8"><h3 className="text-lg font-serif text-[#1C1917] mb-4">Caratteristiche</h3><div className="grid grid-cols-2 gap-3">{selectedProp.features.map((feat, idx) => (<div key={idx} className="flex items-center gap-2 p-3 rounded-xl bg-stone-50 text-stone-600 text-xs font-medium"><Check size={14} className="text-[#A18058]" /> {feat}</div>))}</div></div>
+                    <div className="flex items-center justify-between mb-8 border-b border-[var(--border-primary)] pb-8"><div><p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Prezzo</p><p className="text-2xl font-serif text-[var(--text-primary)]">{selectedProp.price}</p></div><div className="flex gap-6"><div className="text-center"><p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Camere</p><div className="flex items-center gap-1 justify-center text-[var(--text-primary)] font-medium"><BedDouble size={16}/> {selectedProp.beds}</div></div><div className="text-center"><p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Bagni</p><div className="flex items-center gap-1 justify-center text-[var(--text-primary)] font-medium"><Bath size={16}/> {selectedProp.baths}</div></div><div className="text-center"><p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Superficie</p><div className="flex items-center gap-1 justify-center text-[var(--text-primary)] font-medium"><Maximize size={16}/> {selectedProp.sqm}</div></div></div></div>
+                    <div className="mb-8"><h3 className="text-lg font-serif text-[var(--text-primary)] mb-4">Descrizione</h3><p className="text-[var(--text-secondary)] font-light leading-relaxed text-sm">{selectedProp.description}</p></div>
+                    <div className="mb-8"><h3 className="text-lg font-serif text-[var(--text-primary)] mb-4">Caratteristiche</h3><div className="grid grid-cols-2 gap-3">{selectedProp.features.map((feat, idx) => (<div key={idx} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--bg-tertiary)] text-[var(--text-secondary)] text-xs font-medium"><Check size={14} className="text-[#A18058]" /> {feat}</div>))}</div></div>
                 </div>
-                <div className="p-6 border-t border-stone-100 bg-stone-50 shrink-0 flex gap-4">
+                <div className="p-6 border-t border-[var(--border-primary)] bg-[var(--bg-tertiary)] shrink-0 flex gap-4">
                     {/* HEART BUTTON - ACTIVATED */}
                     <button 
                         onClick={() => handleFavoriteClick(selectedProp)} 
-                        className={`flex-1 border text-[#1C1917] py-4 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 group/heart ${isFavorite(selectedProp.id) ? 'bg-white border-red-200 text-red-500 active-heart-burst' : 'bg-white border-stone-200 hover:border-red-400 hover:text-red-500'} ${animatingHeart ? 'animate-heart-pop' : ''}`}
+                        className={`flex-1 border text-[var(--text-primary)] py-4 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 group/heart ${isFavorite(selectedProp.id) ? 'bg-[var(--bg-secondary)] border-red-200 text-red-500 active-heart-burst' : 'bg-[var(--bg-secondary)] border-[var(--border-primary)] hover:border-red-400 hover:text-red-500'} ${animatingHeart ? 'animate-heart-pop' : ''}`}
                     >
                         <Heart 
                             size={16} 
@@ -276,7 +321,7 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
                         /> 
                         {isFavorite(selectedProp.id) ? "Salvato" : "Salva"}
                     </button>
-                    <button onClick={onOpenBooking} className="flex-[2] bg-[#1C1917] text-white py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#A18058] transition-colors shadow-lg flex items-center justify-center gap-2">Prenota Visita <ArrowRight size={16} /></button>
+                    <button onClick={onOpenBooking} className="flex-[2] bg-stone-900 dark:bg-[#A18058] text-white py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-colors shadow-lg flex items-center justify-center gap-2">Prenota Visita <ArrowRight size={16} /></button>
                 </div>
              </div>
         </div>

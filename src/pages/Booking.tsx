@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Calendar as CalIcon, User, MapPin, Clock, ChevronRight, ChevronLeft, CheckCircle, Home, ArrowLeft, ShieldCheck, CalendarPlus, Building, X, ArrowRight as ArrowRightIcon, Lock, Mail, Phone, MessageSquare } from 'lucide-react';
 
 interface BookingSystemProps {
-  onClose: () => void;
+  onClose?: () => void;
   onOpenValuation?: () => void;
   onOpenAbout?: () => void;
   onOpenRentals?: () => void;

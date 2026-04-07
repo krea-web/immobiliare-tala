@@ -7,27 +7,27 @@ interface CTAProps {
 
 const CTA: React.FC<CTAProps> = ({ onOpenValuation, onOpenBooking }) => {
   return (
-    <section id="chisiamo" className="bg-[#1C1917] py-24 relative overflow-hidden">
+    <section id="chisiamo" className="bg-[var(--bg-primary)] py-24 relative overflow-hidden transition-colors duration-500">
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5"></div>
       {/* Decorative Glow */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#A18058] rounded-full blur-[180px] opacity-20 translate-x-1/2 -translate-y-1/2"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-16">
         <div className="md:w-1/2">
-          <h2 className="text-4xl md:text-5xl text-[#FAFAF9] font-serif italic mb-6">Affida a noi la tua visione.</h2>
-          <p className="text-stone-400 text-sm leading-relaxed mb-10 max-w-md font-light">
+          <h2 className="text-4xl md:text-5xl text-[var(--text-primary)] font-serif italic mb-6">Affida a noi la tua visione.</h2>
+          <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-10 max-w-md font-light">
             Che tu stia cercando la casa dei sogni o voglia valorizzare il tuo immobile, il team Tala ti guida con competenza, discrezione e stile.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <button 
               onClick={onOpenValuation}
-              className="btn-super-glow bg-[#FAFAF9] text-[#1C1917] px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest"
+              className="btn-super-glow bg-[#A18058] text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl"
             >
               Valuta il tuo immobile
             </button>
             <button 
               onClick={onOpenBooking}
-              className="btn-super-glow bg-[#1C1917] border border-stone-700 text-[#FAFAF9] px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[#FAFAF9]"
+              className="btn-super-glow bg-transparent border border-[var(--border-primary)] text-[var(--text-primary)] px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:border-[#A18058] hover:text-[#A18058]"
             >
               Prenota ora una visita dei nostri immobili
             </button>

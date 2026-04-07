@@ -1,25 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="it" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Immobiliare Tala | Luxury Real Estate</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              gold: '#A18058',
-              obsidian: '#0C0A09',
-              stone_dark: '#1C1917',
-            }
-          }
-        }
-      }
-    </script>
+    <meta name="description" content="Immobiliare Tala - Agenzia immobiliare di lusso. Vendita, affitto e valutazione immobili." />
+    <meta name="keywords" content="immobiliare, lusso, vendita case, affitto case, valutazione immobile, Tala" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://immobiliaretala.it/" />
+    <meta property="og:title" content="Immobiliare Tala | Luxury Real Estate" />
+    <meta property="og:description" content="Immobiliare Tala - Agenzia immobiliare di lusso. Vendita, affitto e valutazione immobili." />
+    <meta property="og:image" content="/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://immobiliaretala.it/" />
+    <meta property="twitter:title" content="Immobiliare Tala | Luxury Real Estate" />
+    <meta property="twitter:description" content="Immobiliare Tala - Agenzia immobiliare di lusso. Vendita, affitto e valutazione immobili." />
+    <meta property="twitter:image" content="/og-image.jpg" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -53,12 +54,10 @@
             font-family: 'Playfair Display', serif;
         }
 
-        /* Smoothing transition for all themed elements */
         *, *::before, *::after {
             transition: border-color 0.4s ease, background-color 0.4s ease, color 0.4s ease, opacity 0.4s ease, box-shadow 0.4s ease;
         }
 
-        /* Supporto Dark Mode Avanzato */
         html.dark .bg-white { background-color: #1C1917 !important; color: #FAFAF9; }
         html.dark .bg-[#FAFAF9] { background-color: #0C0A09 !important; }
         html.dark .text-[#1C1917] { color: #FAFAF9 !important; }
@@ -67,23 +66,11 @@
         html.dark .border-stone-100 { border-color: rgba(255,255,255,0.04) !important; }
         html.dark .bg-stone-50 { background-color: rgba(255,255,255,0.02) !important; }
         
-        /* Custom subtle scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: #D6D3D1;
-            border-radius: 20px;
-        }
-        
-        html.dark ::-webkit-scrollbar-thumb {
-            background-color: #333;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: #D6D3D1; border-radius: 20px; }
+        html.dark ::-webkit-scrollbar-thumb { background-color: #333; }
 
-        /* Glassmorphism utilities */
         .glass {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
@@ -96,104 +83,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* 3D & Perspective Core */
-        .perspective-3d {
-            perspective: 2000px;
-        }
-
-        .preserve-3d {
-            transform-style: preserve-3d;
-        }
-
-        /* Cinematic Animations */
-        @keyframes cinema-reveal {
-            0% { opacity: 0; transform: translateY(40px) scale(1.05); filter: blur(15px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-
-        .animate-cinema {
-            animation: cinema-reveal 1.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        }
-
-        @keyframes floating-subtle {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(1deg); }
-        }
-
-        .animate-float {
-            animation: floating-subtle 8s ease-in-out infinite;
-        }
-
-        @keyframes heart-pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.4) rotate(-15deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
-
-        .animate-heart-pop {
-            animation: heart-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes slowZoomPan {
-            0% { transform: scale(1) translateX(0); }
-            100% { transform: scale(1.1) translateX(-2%); }
-        }
-
-        .animate-hero-bg {
-            animation: slowZoomPan 25s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
-            will-change: transform;
-        }
-        
-        ::selection {
-            background: #A18058;
-            color: white;
-        }
-
-        /* --- BOTTONI ULTRA-LUMINOSI --- */
-        @keyframes super-spin {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        .btn-super-glow {
-            position: relative;
-            overflow: hidden;
-            isolation: isolate;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            background-clip: padding-box;
-            border: 2px solid transparent;
-        }
-
-        .btn-super-glow::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            height: 300%;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0%,
-                rgba(161, 128, 88, 0.4) 15%,
-                rgba(255, 255, 255, 0.9) 25%,
-                #A18058 35%,
-                transparent 50%,
-                rgba(161, 128, 88, 0.4) 65%,
-                rgba(255, 255, 255, 0.9) 75%,
-                #A18058 85%,
-                transparent 100%
-            );
-            animation: super-spin 3s linear infinite;
-            z-index: -2;
-            opacity: 0.8;
-            filter: blur(4px);
-        }
-
-        .btn-super-glow:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 15px 40px rgba(161, 128, 88, 0.4);
-        }
-
         .page-transition {
             animation: fadeInScale 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
@@ -203,19 +92,9 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.560.0",
-    "@google/genai": "https://esm.sh/@google/genai@^1.33.0"
-  }
-}
-</script>
-</head>
+  </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

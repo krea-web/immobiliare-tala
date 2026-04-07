@@ -60,17 +60,17 @@ const Partners: React.FC = () => {
   const marqueeLogos = [...LOGOS, ...LOGOS];
 
   return (
-    <section className="border-y border-stone-200 bg-white overflow-hidden py-10 relative group">
+    <section className="border-y border-[var(--border-primary)] bg-[var(--bg-secondary)] overflow-hidden py-10 relative group transition-colors duration-500">
       {/* Gradient Masks */}
-      <div className="absolute inset-y-0 left-0 w-32 md:w-64 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-32 md:w-64 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute inset-y-0 left-0 w-32 md:w-64 bg-gradient-to-r from-[var(--bg-secondary)] via-[var(--bg-secondary)]/90 to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute inset-y-0 right-0 w-32 md:w-64 bg-gradient-to-l from-[var(--bg-secondary)] via-[var(--bg-secondary)]/90 to-transparent z-10 pointer-events-none"></div>
 
       {/* Marquee Container */}
       <div className="flex w-fit animate-marquee hover:[animation-play-state:paused] items-center">
         {marqueeLogos.map((logo, idx) => (
           <div 
             key={idx} 
-            className="flex items-center justify-center mx-8 md:mx-12 min-w-[120px] text-stone-300 hover:text-[#1C1917] hover:scale-105 transition-all duration-500 cursor-pointer ease-out opacity-60 hover:opacity-100 grayscale hover:grayscale-0"
+            className="flex items-center justify-center mx-8 md:mx-12 min-w-[120px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:scale-105 transition-all duration-500 cursor-pointer ease-out opacity-60 hover:opacity-100 grayscale hover:grayscale-0"
           >
             {logo}
           </div>

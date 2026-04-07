@@ -60,10 +60,10 @@ const secondRow = [...testimonials.slice().reverse(), ...testimonials.slice().re
 // Fix: Explicitly type TestimonialCard as a React functional component to allow React's special 'key' prop.
 const TestimonialCard: React.FC<{ item: typeof testimonials[0] }> = ({ item }) => (
   <div className="flex-none w-[350px] md:w-[450px] p-4 group">
-    <div className="h-full bg-white rounded-[2.5rem] p-8 border border-stone-100 shadow-sm transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(161,128,88,0.12)] group-hover:border-[#A18058]/30 group-hover:-translate-y-2 relative overflow-hidden flex flex-col justify-between">
+    <div className="h-full bg-[var(--bg-secondary)] rounded-[2.5rem] p-8 border border-[var(--border-primary)] shadow-sm transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(161,128,88,0.12)] group-hover:border-[#A18058]/30 group-hover:-translate-y-2 relative overflow-hidden flex flex-col justify-between">
       {/* Decorative Initial */}
       <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500">
-        <span className="text-9xl font-serif leading-none select-none">{item.name.charAt(0)}</span>
+        <span className="text-9xl font-serif leading-none select-none text-[var(--text-primary)]">{item.name.charAt(0)}</span>
       </div>
 
       <div className="relative z-10">
@@ -73,20 +73,20 @@ const TestimonialCard: React.FC<{ item: typeof testimonials[0] }> = ({ item }) =
           ))}
         </div>
         
-        <blockquote className="text-xl md:text-2xl font-serif italic text-stone-800 leading-snug mb-8">
+        <blockquote className="text-xl md:text-2xl font-serif italic text-[var(--text-primary)] leading-snug mb-8">
           "{item.quote}"
         </blockquote>
       </div>
 
-      <div className="relative z-10 flex items-center gap-4 pt-6 border-t border-stone-50">
-        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-stone-50 shadow-md">
+      <div className="relative z-10 flex items-center gap-4 pt-6 border-t border-[var(--border-primary)]">
+        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[var(--border-primary)] shadow-md">
           <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
         </div>
         <div>
-          <p className="font-bold text-[11px] uppercase tracking-widest text-stone-900">{item.name}</p>
+          <p className="font-bold text-[11px] uppercase tracking-widest text-[var(--text-primary)]">{item.name}</p>
           <p className="text-[10px] text-[#A18058] font-medium tracking-wide">{item.role}</p>
         </div>
-        <div className="ml-auto opacity-10">
+        <div className="ml-auto opacity-10 text-[var(--text-primary)]">
           <Quote size={24} />
         </div>
       </div>
@@ -96,7 +96,7 @@ const TestimonialCard: React.FC<{ item: typeof testimonials[0] }> = ({ item }) =
 
 const Testimonials: React.FC = () => {
   return (
-    <section className="py-32 bg-[#FAFAF9] overflow-hidden relative">
+    <section className="py-32 bg-[var(--bg-primary)] overflow-hidden relative transition-colors duration-500">
       <style>{`
         @keyframes marquee-left {
           0% { transform: translateX(0); }
@@ -123,9 +123,9 @@ const Testimonials: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-6 mb-20 text-center relative z-10">
         <span className="text-[#A18058] font-bold tracking-[0.3em] text-[10px] uppercase mb-4 block">Voci dall'Elite</span>
-        <h2 className="text-4xl md:text-6xl font-serif text-stone-900 leading-tight">
+        <h2 className="text-4xl md:text-6xl font-serif text-[var(--text-primary)] leading-tight">
           L'eccellenza è <br />
-          <span className="italic text-stone-500">un'abitudine.</span>
+          <span className="italic text-[var(--text-secondary)]">un'abitudine.</span>
         </h2>
       </div>
 
@@ -151,7 +151,7 @@ const Testimonials: React.FC = () => {
 
       {/* Bottom Subtle Tag */}
       <div className="mt-20 text-center">
-        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-stone-200 bg-white/50 backdrop-blur-sm text-stone-400 text-[10px] font-bold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-[var(--border-primary)] bg-[var(--bg-secondary)]/50 backdrop-blur-sm text-[var(--text-tertiary)] text-[10px] font-bold uppercase tracking-widest">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           Oltre 500 clienti soddisfatti nel 2024
         </div>
