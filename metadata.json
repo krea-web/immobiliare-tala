@@ -1,0 +1,7 @@
+{
+  "name": "Tala Real Estate Agency ",
+  "description": "A luxury real estate agency landing page featuring exclusive property listings, high-end services, and a sophisticated design aesthetic.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
