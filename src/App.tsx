@@ -10,6 +10,7 @@ import Rentals from './pages/Rentals';
 import Valuation from './pages/Valuation';
 import ReservedArea from './pages/ReservedArea';
 import Booking from './pages/Booking';
+import StayBooking from './pages/StayBooking';
 import Admin from './pages/Admin';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -23,7 +24,7 @@ const App: React.FC = () => {
       sales: '/vendita',
       rentals: '/affitto',
       valuation: '/valuta-il-tuo-immobile',
-      booking: '/prenota',
+      booking: '/prenota-una-visita',
       about: '/chi-siamo',
       reserved: '/area-riservata'
     };
@@ -46,7 +47,8 @@ const App: React.FC = () => {
               <Route path="/affitto" element={<Rentals />} />
               <Route path="/valuta-il-tuo-immobile" element={<Valuation />} />
               <Route path="/area-riservata" element={<ReservedArea />} />
-              <Route path="/prenota" element={<Booking />} />
+              <Route path="/prenota" element={<StayBooking />} />
+              <Route path="/prenota-una-visita" element={<Booking />} />
               <Route path="/admin" element={<Admin />} />
             </Routes>
           </main>

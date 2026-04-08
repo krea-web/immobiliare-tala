@@ -51,21 +51,12 @@ const Chatbot: React.FC<ChatbotProps> = ({ onNavigate }) => {
   // Initialize Chat Session with Grounding Tools and Function Calling
   useEffect(() => {
     const initChat = async () => {
-      // Attempt to get user location for better Maps grounding
-      let location = undefined;
-      try {
-          const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
-              navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
-          });
-          location = {
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude
-          };
-      } catch (e) {
-          console.debug("Location access denied or unavailable, proceeding without user location.");
+      const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+      if (!apiKey) {
+        return;
       }
 
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey });
       chatSessionRef.current = ai.chats.create({
         model: 'gemini-2.5-flash',
         config: {
@@ -74,11 +65,6 @@ const Chatbot: React.FC<ChatbotProps> = ({ onNavigate }) => {
               { googleMaps: {} },
               { functionDeclarations: [navigationTool] }
           ],
-          toolConfig: location ? {
-              googleMapsToolConfig: {
-                 // SDK might interpret retrievalConfig here if supported in future
-              }
-          } : undefined,
           systemInstruction: `
             Sei 'Tala Concierge', l'assistente virtuale d'élite di 'Immobiliare Tala'.
             
@@ -103,7 +89,18 @@ const Chatbot: React.FC<ChatbotProps> = ({ onNavigate }) => {
   }, []);
 
   const handleSend = async () => {
-    if (!input.trim() || !chatSessionRef.current) return;
+    if (!input.trim()) return;
+
+    if (!chatSessionRef.current) {
+      const userMessage = input;
+      setInput('');
+      setMessages(prev => [
+        ...prev,
+        { role: 'user', text: userMessage },
+        { role: 'model', text: "Gentile Cliente, il servizio di concierge digitale non è al momento disponibile. Nel frattempo posso guidarLa tra Vendite, Affitti o Valutazione." }
+      ]);
+      return;
+    }
 
     const userMessage = input;
     setInput('');

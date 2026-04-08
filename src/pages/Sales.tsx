@@ -281,7 +281,7 @@ const Sales: React.FC = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <button onClick={() => navigate('/prenota')} className="w-full py-5 bg-[#1C1917] dark:bg-[#A18058] text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-all flex items-center justify-center gap-3 shadow-xl">
+                  <button onClick={() => navigate('/prenota-una-visita')} className="w-full py-5 bg-[#1C1917] dark:bg-[#A18058] text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-all flex items-center justify-center gap-3 shadow-xl">
                     <CalendarCheck size={18} /> Richiedi Visita Privata
                   </button>
                   <button className="w-full py-5 border-2 border-[#1C1917] dark:border-[var(--border-primary)] text-[var(--text-primary)] rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-[#1C1917] dark:hover:bg-[#A18058] hover:text-white transition-all flex items-center justify-center gap-3">

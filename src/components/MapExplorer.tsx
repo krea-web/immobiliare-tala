@@ -1,12 +1,30 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, MapPin, Compass, Plus, Minus, X, Bath, BedDouble, Maximize, Heart, ArrowRight, Check } from 'lucide-react';
+import { MapPin, Compass, Plus, Minus, X, Bath, BedDouble, Maximize, Heart, ArrowRight, Check } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
+import { useTheme } from '../context/ThemeContext';
 
 // Declare Leaflet global
 declare const L: any;
 
-const properties = [
+type MapExplorerItem = {
+  id: number | string;
+  title: string;
+  location: string;
+  price: string;
+  image: string;
+  beds: number;
+  baths: number;
+  sqm: string;
+  rating: string;
+  description: string;
+  features: string[];
+  lat: number;
+  lng: number;
+  listingType?: 'sale' | 'rental';
+};
+
+const properties: MapExplorerItem[] = [
   {
     id: 2,
     title: "Villa Chira",
@@ -20,7 +38,8 @@ const properties = [
     description: "Esclusività assoluta fronte mare. Situata proprio di fronte all'isola di Tavolara, questa proprietà offre accesso diretto alla spiaggia (5mt) e un parco privato di macchia mediterranea.",
     features: ["Fronte Mare (5m)", "Vista Tavolara", "Accesso Spiaggia", "Privacy"],
     lat: 40.8756,
-    lng: 9.6465
+    lng: 9.6465,
+    listingType: 'sale'
   },
   {
     id: 3,
@@ -35,7 +54,8 @@ const properties = [
     description: "Splendida reinterpretazione dello 'Stazzo Gallurese' in chiave contemporanea. Piscina a sfioro, palestra outdoor e un design che dialoga perfettamente con la natura circostante.",
     features: ["Design Architettonico", "Piscina Infinity", "Palestra", "Bioedilizia"],
     lat: 40.8359,
-    lng: 9.6732
+    lng: 9.6732,
+    listingType: 'sale'
   },
   {
     id: 4,
@@ -50,7 +70,8 @@ const properties = [
     description: "Autentica villa indipendente immersa nella tranquillità delle colline di Budoni, a pochi minuti dal mare. Ideale per chi cerca relax e autenticità sarda.",
     features: ["Ampio Giardino", "Vista Colline", "Veranda", "Zona BBQ"],
     lat: 40.7061,
-    lng: 9.6845
+    lng: 9.6845,
+    listingType: 'sale'
   },
   {
     id: 5,
@@ -65,7 +86,8 @@ const properties = [
     description: "Nel prestigioso consorzio di Puntaldia, appartamento con terrazza panoramica sul campo da golf e sul mare. Servizi di portineria e sicurezza h24.",
     features: ["Golf Front", "Sicurezza H24", "Porto Turistico", "Terrazza"],
     lat: 40.8158,
-    lng: 9.6976
+    lng: 9.6976,
+    listingType: 'sale'
   },
   {
     id: 6,
@@ -80,7 +102,8 @@ const properties = [
     description: "Villa moderna su due livelli con privacy totale situata nel prestigioso comprensorio de I Giardini d'Aldia. Vicinissima alla spiaggia di Lu Impostu, offre design contemporaneo e comfort di lusso.",
     features: ["Piscina Privata", "Palestra", "Domotica", "Vicinanza Spiaggia"],
     lat: 40.8250,
-    lng: 9.6800
+    lng: 9.6800,
+    listingType: 'rental'
   },
   {
     id: 7,
@@ -95,26 +118,33 @@ const properties = [
     description: "Deliziosa villa bifamiliare con vista sulla baia di Cala Suaraccia. Immersa nel verde, offre accesso a campi da tennis e piscina condominiale. Ideale per famiglie.",
     features: ["Vista Baia", "Piscina Condominiale", "Tennis", "Veranda"],
     lat: 40.8400,
-    lng: 9.6900
+    lng: 9.6900,
+    listingType: 'rental'
   }
 ];
 
 interface MapExplorerProps {
-    onOpenBooking?: () => void;
+  items?: MapExplorerItem[];
+  bookingLabel?: string;
+  onOpenBooking?: (property?: MapExplorerItem) => void;
 }
 
-const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
-  const [activeId, setActiveId] = useState<number | null>(null);
+const MapExplorer: React.FC<MapExplorerProps> = ({ items, bookingLabel, onOpenBooking }) => {
+  const data = items ?? properties;
+  const [activeId, setActiveId] = useState<number | string | null>(null);
   const [showDetail, setShowDetail] = useState(false);
-  const [selectedProp, setSelectedProp] = useState<typeof properties[0] | null>(null);
+  const [selectedProp, setSelectedProp] = useState<MapExplorerItem | null>(null);
   const [animatingHeart, setAnimatingHeart] = useState(false);
   const mapRef = useRef<any>(null);
+  const tileLayerRef = useRef<any>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const markersRef = useRef<{ [key: number]: any }>({});
+  const markersRef = useRef<Record<string, any>>({});
+  const activeIdRef = useRef<number | string | null>(null);
   
   const { toggleFavorite, isFavorite } = useFavorites();
+  const { theme } = useTheme();
 
-  const handlePinClick = (prop: typeof properties[0]) => {
+  const handlePinClick = (prop: MapExplorerItem) => {
     setActiveId(prop.id);
     setSelectedProp(prop);
     setShowDetail(true);
@@ -145,6 +175,10 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
   };
 
   useEffect(() => {
+    activeIdRef.current = activeId;
+  }, [activeId]);
+
+  useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
 
     if (typeof L !== 'undefined') {
@@ -156,26 +190,30 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
             dragging: true
         });
 
-        // Use dark tiles if theme is dark
-        const tileUrl = theme === 'dark' 
+        const tileUrl =
+          theme === 'dark'
             ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
             : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 
-        L.tileLayer(tileUrl, {
-            attribution: theme === 'dark' ? '&copy; OpenStreetMap &copy; CARTO' : 'Tiles &copy; Esri',
-            maxZoom: 19
+        const tileLayer = L.tileLayer(tileUrl, {
+          attribution:
+            theme === 'dark'
+              ? '&copy; OpenStreetMap &copy; CARTO'
+              : 'Tiles &copy; Esri',
+          maxZoom: 19
         }).addTo(map);
+        tileLayerRef.current = tileLayer;
 
         mapRef.current = map;
 
-        const createCustomIcon = (prop: typeof properties[0]) => {
+        const createCustomIcon = () => {
              return L.divIcon({
                  className: 'bg-transparent border-none',
                  html: `
-                    <div class="relative flex items-center justify-center w-10 h-10 transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer transition-transform duration-300 hover:scale-110">
-                        <span class="absolute inset-0 rounded-full bg-white animate-ping opacity-40"></span>
-                        <span class="absolute inset-[-4px] rounded-full bg-[#A18058] opacity-20 group-hover:opacity-40 transition-opacity"></span>
-                        <div class="relative flex items-center justify-center w-9 h-9 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-md border-2 border-white transition-all duration-300 bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[#A18058] hover:border-white">
+                    <div class="map-marker">
+                        <span class="map-marker-pulse"></span>
+                        <span class="map-marker-glow"></span>
+                        <div class="map-marker-inner">
                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                         </div>
                     </div>
@@ -185,34 +223,58 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
              });
         };
 
-        properties.forEach(prop => {
-            const marker = L.marker([prop.lat, prop.lng], { icon: createCustomIcon(prop) }).addTo(map);
-            marker.bindTooltip(`<div class="text-center"><div class="font-bold text-[10px] uppercase tracking-widest text-[#1C1917] mb-0.5">${prop.title}</div><div class="font-serif text-[9px] text-stone-500">${prop.price}</div></div>`, { permanent: false, direction: 'top', offset: [0, -20], opacity: 1, className: 'custom-leaflet-tooltip' });
+        data.forEach(prop => {
+            const marker = L.marker([prop.lat, prop.lng], { icon: createCustomIcon() }).addTo(map);
+            marker.bindTooltip(
+              `<div style="text-align:center;"><div style="font-weight:700;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-primary);margin-bottom:2px;">${prop.title}</div><div style="font-family:'Playfair Display',serif;font-size:9px;color:var(--text-secondary);">${prop.price}</div></div>`,
+              { permanent: false, direction: 'top', offset: [0, -20], opacity: 1, className: 'custom-leaflet-tooltip' }
+            );
             marker.on('click', () => handlePinClick(prop));
             marker.on('mouseover', function(this: any) { this.setZIndexOffset(1000); });
-            marker.on('mouseout', function(this: any) { if (activeId !== prop.id) this.setZIndexOffset(0); });
-            markersRef.current[prop.id] = marker;
+            marker.on('mouseout', function(this: any) { if (activeIdRef.current !== prop.id) this.setZIndexOffset(0); });
+            markersRef.current[String(prop.id)] = marker;
         });
     }
-  }, []);
+  }, [theme]);
+
+  useEffect(() => {
+    if (!mapRef.current || !tileLayerRef.current) return;
+
+    const nextTileUrl =
+      theme === 'dark'
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+
+    const map = mapRef.current;
+    try {
+      tileLayerRef.current.remove();
+    } catch {
+    }
+    const nextLayer = L.tileLayer(nextTileUrl, {
+      attribution:
+        theme === 'dark'
+          ? '&copy; OpenStreetMap &copy; CARTO'
+          : 'Tiles &copy; Esri',
+      maxZoom: 19
+    }).addTo(map);
+    tileLayerRef.current = nextLayer;
+  }, [theme]);
 
   useEffect(() => {
       if (!mapRef.current) return;
-      properties.forEach(prop => {
-          const marker = markersRef.current[prop.id];
+      data.forEach(prop => {
+          const marker = markersRef.current[String(prop.id)];
           if (marker) {
               const el = marker.getElement();
               if(el) {
-                  const inner = el.querySelector('.w-9');
+                  const inner = el.querySelector('.map-marker-inner');
                   if(inner) {
                       if (prop.id === activeId) {
                           marker.setZIndexOffset(2000);
-                          inner.classList.add('bg-[#A18058]', 'scale-125', 'ring-4', 'ring-[#A18058]/40');
-                          inner.classList.remove('bg-[#1C1917]');
+                          inner.classList.add('map-marker-inner--active');
                       } else {
                           marker.setZIndexOffset(0);
-                          inner.classList.remove('bg-[#A18058]', 'scale-125', 'ring-4', 'ring-[#A18058]/40');
-                          inner.classList.add('bg-[#1C1917]');
+                          inner.classList.remove('map-marker-inner--active');
                       }
                   }
               }
@@ -234,6 +296,59 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
         } 
         .custom-leaflet-tooltip:before { border-top-color: var(--bg-secondary); } 
         .leaflet-container { background: #000 !important; }
+        .map-marker {
+          position: relative;
+          width: 40px;
+          height: 40px;
+          transform: translate(-50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: transform 300ms ease;
+        }
+        .map-marker:hover { transform: translate(-50%, -50%) scale(1.1); }
+        .map-marker-pulse {
+          position: absolute;
+          inset: 0;
+          border-radius: 9999px;
+          background: rgba(255, 255, 255, 0.6);
+          animation: mapMarkerPing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        @keyframes mapMarkerPing {
+          0% { transform: scale(1); opacity: 0.35; }
+          100% { transform: scale(1.8); opacity: 0; }
+        }
+        .map-marker-glow {
+          position: absolute;
+          inset: -4px;
+          border-radius: 9999px;
+          background: rgba(161, 128, 88, 0.22);
+          transition: opacity 300ms ease;
+          opacity: 0.22;
+        }
+        .map-marker:hover .map-marker-glow { opacity: 0.45; }
+        .map-marker-inner {
+          position: relative;
+          width: 36px;
+          height: 36px;
+          border-radius: 9999px;
+          background: var(--bg-secondary);
+          color: var(--text-primary);
+          border: 2px solid rgba(255, 255, 255, 0.95);
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(12px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 250ms ease, background-color 250ms ease, box-shadow 250ms ease;
+        }
+        .map-marker-inner--active {
+          background: #A18058;
+          color: #FFFFFF;
+          transform: scale(1.22);
+          box-shadow: 0 0 30px rgba(161, 128, 88, 0.55);
+        }
       `}</style>
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-6">
@@ -265,7 +380,7 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
           </div>
 
           <div className="absolute bottom-0 left-0 w-full p-6 z-10 flex gap-4 overflow-x-auto pb-8 custom-scrollbar snap-x">
-               {properties.map((prop) => (
+               {data.map((prop) => (
                    <div 
                     key={prop.id} 
                     onClick={() => handlePinClick(prop)} 
@@ -303,7 +418,7 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeDetail}></div>
              <div className={`relative w-full md:w-[600px] h-full bg-[var(--bg-secondary)] shadow-2xl flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${showDetail ? 'translate-x-0' : 'translate-x-full'}`}>
                 <button onClick={closeDetail} className="absolute top-6 right-6 z-20 w-10 h-10 bg-white/20 backdrop-blur-md hover:bg-white rounded-full flex items-center justify-center text-white hover:text-[#1C1917] transition-all duration-300"><X size={20} /></button>
-                <div className="h-[40%] relative shrink-0"><img src={selectedProp.image} alt={selectedProp.title} className="w-full h-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div><div className="absolute bottom-0 left-0 p-8 text-white"><div className="inline-block px-3 py-1 bg-[#A18058] text-white text-[10px] font-bold uppercase tracking-widest rounded-sm mb-3">{selectedProp.price.includes('Affitto') ? 'Affitto' : 'In Vendita'}</div><h2 className="text-4xl font-serif mb-2">{selectedProp.title}</h2><p className="text-white/80 flex items-center gap-2 text-sm font-medium"><MapPin size={16} /> {selectedProp.location}</p></div></div>
+                <div className="h-[40%] relative shrink-0"><img src={selectedProp.image} alt={selectedProp.title} className="w-full h-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div><div className="absolute bottom-0 left-0 p-8 text-white"><div className="inline-block px-3 py-1 bg-[#A18058] text-white text-[10px] font-bold uppercase tracking-widest rounded-sm mb-3">{(selectedProp.listingType ?? (selectedProp.price.toLowerCase().includes('affitto') ? 'rental' : 'sale')) === 'rental' ? 'Affitto' : 'In Vendita'}</div><h2 className="text-4xl font-serif mb-2">{selectedProp.title}</h2><p className="text-white/80 flex items-center gap-2 text-sm font-medium"><MapPin size={16} /> {selectedProp.location}</p></div></div>
                 <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
                     <div className="flex items-center justify-between mb-8 border-b border-[var(--border-primary)] pb-8"><div><p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Prezzo</p><p className="text-2xl font-serif text-[var(--text-primary)]">{selectedProp.price}</p></div><div className="flex gap-6"><div className="text-center"><p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Camere</p><div className="flex items-center gap-1 justify-center text-[var(--text-primary)] font-medium"><BedDouble size={16}/> {selectedProp.beds}</div></div><div className="text-center"><p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Bagni</p><div className="flex items-center gap-1 justify-center text-[var(--text-primary)] font-medium"><Bath size={16}/> {selectedProp.baths}</div></div><div className="text-center"><p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Superficie</p><div className="flex items-center gap-1 justify-center text-[var(--text-primary)] font-medium"><Maximize size={16}/> {selectedProp.sqm}</div></div></div></div>
                     <div className="mb-8"><h3 className="text-lg font-serif text-[var(--text-primary)] mb-4">Descrizione</h3><p className="text-[var(--text-secondary)] font-light leading-relaxed text-sm">{selectedProp.description}</p></div>
@@ -321,7 +436,7 @@ const MapExplorer: React.FC<MapExplorerProps> = ({ onOpenBooking }) => {
                         /> 
                         {isFavorite(selectedProp.id) ? "Salvato" : "Salva"}
                     </button>
-                    <button onClick={onOpenBooking} className="flex-[2] bg-stone-900 dark:bg-[#A18058] text-white py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-colors shadow-lg flex items-center justify-center gap-2">Prenota Visita <ArrowRight size={16} /></button>
+                    <button onClick={() => onOpenBooking?.(selectedProp)} className="flex-[2] bg-stone-900 dark:bg-[#A18058] text-white py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-colors shadow-lg flex items-center justify-center gap-2">{bookingLabel ?? ((selectedProp.listingType ?? (selectedProp.price.toLowerCase().includes('affitto') ? 'rental' : 'sale')) === 'rental' ? 'Prenota Soggiorno' : 'Prenota Visita')} <ArrowRight size={16} /></button>
                 </div>
              </div>
         </div>

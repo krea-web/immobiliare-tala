@@ -199,7 +199,7 @@ export default function BookingSystem({ onClose, preSelectedProperty }: BookingS
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-[#FAFAF9] animate-in fade-in duration-300 flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-[100] bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-500 animate-in fade-in duration-300 flex flex-col overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-40 pointer-events-none mix-blend-overlay"></div>
       
       <main className="flex-1 overflow-y-auto w-full relative z-0 pt-24 pb-8">
@@ -208,15 +208,15 @@ export default function BookingSystem({ onClose, preSelectedProperty }: BookingS
         <div className="md:w-64 flex-shrink-0">
           <div className="hidden md:block sticky top-28">
             <div className="relative pl-2">
-               <div className="absolute left-[19px] top-4 bottom-10 w-px bg-stone-200 -z-10"></div>
+               <div className="absolute left-[19px] top-4 bottom-10 w-px bg-[var(--border-primary)] -z-10"></div>
                {STEPS_INFO.map((s) => (
                    <div key={s.id} className="flex items-start mb-12 last:mb-0">
-                     <div className={`w-10 h-10 rounded-full flex items-center justify-center border z-10 transition-all duration-300 ${step >= s.id ? 'bg-[#1C1917] border-[#1C1917] text-white shadow-lg' : 'bg-white border-stone-200 text-stone-300'}`}>
+                     <div className={`w-10 h-10 rounded-full flex items-center justify-center border z-10 transition-all duration-300 ${step >= s.id ? 'bg-[#1C1917] dark:bg-[#A18058] border-[#1C1917] dark:border-[#A18058] text-white shadow-lg' : 'bg-[var(--bg-secondary)] border-[var(--border-primary)] text-[var(--text-tertiary)]'}`}>
                        {step > s.id ? <CheckCircle size={16} /> : <s.icon size={16} strokeWidth={1.5} />}
                      </div>
                      <div className="ml-4 mt-1">
-                       <h4 className={`text-xs font-bold uppercase tracking-widest ${step >= s.id ? 'text-[#1C1917]' : 'text-stone-300'}`}>{s.label}</h4>
-                       <p className={`text-[10px] mt-1 ${step === s.id ? 'text-[#A18058]' : 'text-stone-300'}`}>{s.desc}</p>
+                       <h4 className={`text-xs font-bold uppercase tracking-widest ${step >= s.id ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)]'}`}>{s.label}</h4>
+                       <p className={`text-[10px] mt-1 ${step === s.id ? 'text-[#A18058]' : 'text-[var(--text-tertiary)]'}`}>{s.desc}</p>
                      </div>
                    </div>
                ))}
@@ -224,9 +224,9 @@ export default function BookingSystem({ onClose, preSelectedProperty }: BookingS
           </div>
         </div>
 
-        <div className="flex-grow bg-white rounded-[2rem] shadow-xl overflow-hidden min-h-[600px] relative flex flex-col border border-stone-100">
+        <div className="flex-grow bg-[var(--bg-secondary)] rounded-[2rem] shadow-xl overflow-hidden min-h-[600px] relative flex flex-col border border-[var(--border-primary)]">
           {step > 1 && step < 5 && (
-            <button onClick={goBack} className="absolute top-8 left-8 p-2 rounded-full hover:bg-stone-50 text-stone-600 transition-colors z-20 group">
+            <button onClick={goBack} className="absolute top-8 left-8 p-2 rounded-full hover:bg-[var(--bg-tertiary)] text-[var(--text-secondary)] transition-colors z-20 group">
               <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             </button>
           )}
@@ -234,14 +234,14 @@ export default function BookingSystem({ onClose, preSelectedProperty }: BookingS
           <div className="p-8 md:p-12 flex-grow">
             {step === 1 && (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 className="text-3xl font-serif text-[#1C1917] mb-2">Seleziona l'immobile</h2>
+                <h2 className="text-3xl font-serif text-[var(--text-primary)] mb-2">Seleziona l'immobile</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
                   {PROPERTIES.map(prop => (
-                    <div key={prop.id} onClick={() => handlePropertySelect(prop)} className="group cursor-pointer border border-stone-100 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 bg-white">
+                    <div key={prop.id} onClick={() => handlePropertySelect(prop)} className="group cursor-pointer border border-[var(--border-primary)] rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 bg-[var(--bg-secondary)]">
                       <div className="h-48 overflow-hidden"><img src={prop.image} alt={prop.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" /></div>
                       <div className="p-6">
                         <h3 className="font-serif text-xl mb-1 group-hover:text-[#A18058]">{prop.title}</h3>
-                        <p className="text-stone-500 text-xs font-medium uppercase tracking-wider">{prop.location}</p>
+                        <p className="text-[var(--text-secondary)] text-xs font-medium uppercase tracking-wider">{prop.location}</p>
                       </div>
                     </div>
                   ))}
@@ -252,12 +252,12 @@ export default function BookingSystem({ onClose, preSelectedProperty }: BookingS
             {step === 2 && (
               <div className="animate-in fade-in slide-in-from-right-8 duration-500 h-full flex flex-col lg:flex-row gap-12">
                 <div className="lg:w-1/2">
-                  <h2 className="text-3xl font-serif text-[#1C1917] mb-2">Seleziona Data</h2>
-                  <div className="bg-[#FAFAF9] rounded-2xl border border-stone-200 p-6 mt-8">
+                  <h2 className="text-3xl font-serif text-[var(--text-primary)] mb-2">Seleziona Data</h2>
+                  <div className="bg-[var(--bg-tertiary)] rounded-2xl border border-[var(--border-primary)] p-6 mt-8">
                     <div className="flex justify-between items-center mb-6 px-2">
-                      <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-stone-200 rounded-full"><ChevronLeft size={18}/></button>
+                      <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-[var(--bg-secondary)] rounded-full"><ChevronLeft size={18}/></button>
                       <h3 className="font-serif text-lg capitalize">{currentMonth.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}</h3>
-                      <button onClick={() => changeMonth(1)} className="p-2 hover:bg-stone-200 rounded-full"><ChevronRight size={18}/></button>
+                      <button onClick={() => changeMonth(1)} className="p-2 hover:bg-[var(--bg-secondary)] rounded-full"><ChevronRight size={18}/></button>
                     </div>
                     <div className="grid grid-cols-7 gap-2 text-center mb-4">
                       {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map(d => (<div key={d} className="text-[10px] font-bold text-[#A18058] uppercase">{d}</div>))}
@@ -265,39 +265,39 @@ export default function BookingSystem({ onClose, preSelectedProperty }: BookingS
                     <div className="grid grid-cols-7 gap-2">
                       {generateCalendarDays().map((dayObj, i) => (
                         <div key={i} className="aspect-square">
-                          {dayObj && <button onClick={() => handleDateSelect(dayObj)} disabled={dayObj.disabled} className={`w-full h-full rounded-lg flex items-center justify-center text-sm font-serif transition-all ${dayObj.disabled ? 'text-stone-300' : formData.date?.toDateString() === dayObj.date.toDateString() ? 'bg-[#1C1917] text-white shadow-lg' : 'hover:bg-white text-stone-600'}`}>{dayObj.day}</button>}
+                          {dayObj && <button onClick={() => handleDateSelect(dayObj)} disabled={dayObj.disabled} className={`w-full h-full rounded-lg flex items-center justify-center text-sm font-serif transition-all ${dayObj.disabled ? 'text-[var(--text-tertiary)]' : formData.date?.toDateString() === dayObj.date.toDateString() ? 'bg-[#1C1917] dark:bg-[#A18058] text-white shadow-lg' : 'hover:bg-[var(--bg-secondary)] text-[var(--text-secondary)]'}`}>{dayObj.day}</button>}
                         </div>
                       ))}
                     </div>
                   </div>
                 </div>
                 <div className="lg:w-1/2 flex flex-col">
-                  <h2 className="text-3xl font-serif text-[#1C1917] mb-2">Seleziona Ora</h2>
+                  <h2 className="text-3xl font-serif text-[var(--text-primary)] mb-2">Seleziona Ora</h2>
                   <div className="mt-8 flex-grow">
                     {formData.date ? (
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {selectedDateSlots.map((slot, idx) => (
-                          <button key={idx} disabled={!slot.available} onClick={() => handleTimeSelect(slot.time)} className={`p-4 rounded-xl border flex items-center justify-center transition-all ${!slot.available ? 'bg-stone-50 text-stone-200 cursor-not-allowed' : formData.time === slot.time ? 'bg-[#1C1917] text-white shadow-lg' : 'bg-white border-stone-200 text-stone-600 hover:border-[#A18058]'}`}>{slot.time}</button>
+                          <button key={idx} disabled={!slot.available} onClick={() => handleTimeSelect(slot.time)} className={`p-4 rounded-xl border flex items-center justify-center transition-all ${!slot.available ? 'bg-[var(--bg-tertiary)] text-[var(--text-tertiary)] cursor-not-allowed border-[var(--border-primary)]' : formData.time === slot.time ? 'bg-[#1C1917] dark:bg-[#A18058] text-white shadow-lg border-transparent' : 'bg-[var(--bg-secondary)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:border-[#A18058]'}`}>{slot.time}</button>
                         ))}
                       </div>
-                    ) : <div className="h-full flex items-center justify-center text-stone-400 text-xs italic">Scegli una data prima</div>}
+                    ) : <div className="h-full flex items-center justify-center text-[var(--text-tertiary)] text-xs italic">Scegli una data prima</div>}
                   </div>
-                  {formData.time && <button onClick={() => setStep(3)} className="mt-8 bg-[#1C1917] text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl flex items-center gap-3 self-end">Continua <ArrowRightIcon size={14} /></button>}
+                  {formData.time && <button onClick={() => setStep(3)} className="mt-8 bg-[#1C1917] dark:bg-[#A18058] text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl flex items-center gap-3 self-end hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-colors">Continua <ArrowRightIcon size={14} /></button>}
                 </div>
               </div>
             )}
 
             {step === 3 && (
                 <div className="animate-in fade-in slide-in-from-right-8 duration-500 max-w-lg mx-auto">
-                    <h2 className="text-3xl font-serif text-[#1C1917] mb-2">{authMode === 'register' ? 'Crea il tuo profilo' : 'Bentornato'}</h2>
-                    <p className="text-stone-500 text-sm mb-10">Per confermare la visita è necessario un account.</p>
+                    <h2 className="text-3xl font-serif text-[var(--text-primary)] mb-2">{authMode === 'register' ? 'Crea il tuo profilo' : 'Bentornato'}</h2>
+                    <p className="text-[var(--text-secondary)] text-sm mb-10">Per confermare la visita è necessario un account.</p>
                     <form onSubmit={handleAuthSubmit} className="space-y-4">
                         {authMode === 'register' && (
-                            <div className="relative"><User className="absolute left-3 top-3 text-stone-400" size={18} /><input required type="text" placeholder="Nome Completo" className="w-full pl-10 p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none" value={formData.clientName} onChange={e => setFormData({...formData, clientName: e.target.value})} /></div>
+                            <div className="relative"><User className="absolute left-3 top-3 text-[var(--text-tertiary)]" size={18} /><input required type="text" placeholder="Nome Completo" className="w-full pl-10 p-3 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] rounded-xl focus:outline-none text-[var(--text-primary)]" value={formData.clientName} onChange={e => setFormData({...formData, clientName: e.target.value})} /></div>
                         )}
-                        <div className="relative"><Mail className="absolute left-3 top-3 text-stone-400" size={18} /><input required type="email" placeholder="Email" className="w-full pl-10 p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none" value={formData.clientEmail} onChange={e => setFormData({...formData, clientEmail: e.target.value})} /></div>
-                        <div className="relative"><Lock className="absolute left-3 top-3 text-stone-400" size={18} /><input required type="password" placeholder="Password" className="w-full pl-10 p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none" value={formData.clientPassword} onChange={e => setFormData({...formData, clientPassword: e.target.value})} /></div>
-                        <button type="submit" className="w-full py-4 bg-[#1C1917] text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#A18058] transition-all shadow-lg">{authMode === 'register' ? 'Registrati e Continua' : 'Accedi e Continua'}</button>
+                        <div className="relative"><Mail className="absolute left-3 top-3 text-[var(--text-tertiary)]" size={18} /><input required type="email" placeholder="Email" className="w-full pl-10 p-3 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] rounded-xl focus:outline-none text-[var(--text-primary)]" value={formData.clientEmail} onChange={e => setFormData({...formData, clientEmail: e.target.value})} /></div>
+                        <div className="relative"><Lock className="absolute left-3 top-3 text-[var(--text-tertiary)]" size={18} /><input required type="password" placeholder="Password" className="w-full pl-10 p-3 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] rounded-xl focus:outline-none text-[var(--text-primary)]" value={formData.clientPassword} onChange={e => setFormData({...formData, clientPassword: e.target.value})} /></div>
+                        <button type="submit" className="w-full py-4 bg-[#1C1917] dark:bg-[#A18058] text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-all shadow-lg">{authMode === 'register' ? 'Registrati e Continua' : 'Accedi e Continua'}</button>
                     </form>
                     <button onClick={() => setAuthMode(authMode === 'register' ? 'login' : 'register')} className="w-full mt-4 text-[10px] uppercase font-bold text-[#A18058] hover:underline">{authMode === 'register' ? 'Hai già un account? Accedi' : 'Non hai un account? Registrati'}</button>
                 </div>
@@ -305,32 +305,32 @@ export default function BookingSystem({ onClose, preSelectedProperty }: BookingS
 
             {step === 4 && (
                 <div className="animate-in fade-in slide-in-from-right-8 duration-500 text-center max-w-2xl mx-auto">
-                    <h2 className="text-3xl font-serif text-[#1C1917] mb-2">Scegli il tuo consulente</h2>
-                    <p className="text-stone-500 text-sm mb-12">L'agente selezionato ti guiderà durante la visita.</p>
+                    <h2 className="text-3xl font-serif text-[var(--text-primary)] mb-2">Scegli il tuo consulente</h2>
+                    <p className="text-[var(--text-secondary)] text-sm mb-12">L'agente selezionato ti guiderà durante la visita.</p>
                     <div className="grid grid-cols-2 gap-8">
                         {AGENTS.map(agent => (
-                            <div key={agent.id} onClick={() => handleAgentSelect(agent)} className={`p-8 rounded-[2rem] border transition-all cursor-pointer ${formData.agent?.id === agent.id ? 'border-[#A18058] bg-[#A18058]/5' : 'border-stone-100 hover:border-[#A18058]/40'}`}>
-                                <img src={agent.image} className="w-24 h-24 mx-auto rounded-full mb-4 object-cover border border-stone-100 shadow-sm" alt={agent.name} />
+                            <div key={agent.id} onClick={() => handleAgentSelect(agent)} className={`p-8 rounded-[2rem] border transition-all cursor-pointer ${formData.agent?.id === agent.id ? 'border-[#A18058] bg-[#A18058]/5' : 'border-[var(--border-primary)] hover:border-[#A18058]/40'}`}>
+                                <img src={agent.image} className="w-24 h-24 mx-auto rounded-full mb-4 object-cover border border-[var(--border-primary)] shadow-sm" alt={agent.name} />
                                 <h4 className="font-serif text-lg">{agent.name}</h4>
-                                <p className="text-[9px] uppercase font-bold text-stone-400 tracking-widest">{agent.role}</p>
+                                <p className="text-[9px] uppercase font-bold text-[var(--text-tertiary)] tracking-widest">{agent.role}</p>
                             </div>
                         ))}
                     </div>
-                    <button onClick={handleFinalSubmit} disabled={!formData.agent} className={`w-full mt-12 py-4 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${formData.agent ? 'bg-[#1C1917] text-white hover:bg-[#A18058] shadow-xl' : 'bg-stone-100 text-stone-400 cursor-not-allowed'}`}>Invia Richiesta di Visita</button>
+                    <button onClick={handleFinalSubmit} disabled={!formData.agent} className={`w-full mt-12 py-4 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${formData.agent ? 'bg-[#1C1917] dark:bg-[#A18058] text-white hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] shadow-xl' : 'bg-[var(--bg-tertiary)] text-[var(--text-tertiary)] cursor-not-allowed border border-[var(--border-primary)]'}`}>Invia Richiesta di Visita</button>
                 </div>
             )}
 
             {step === 5 && (
               <div className="animate-in zoom-in duration-500 flex flex-col items-center justify-center text-center py-6 h-full">
-                <div className="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-8"><CheckCircle size={40} /></div>
-                <h2 className="text-4xl font-serif text-[#1C1917] mb-4">Richiesta Inviata</h2>
-                <p className="text-stone-500 text-sm max-w-md mx-auto mb-10 leading-relaxed">Grazie! La richiesta per <strong>{formData.property?.title}</strong> è stata inoltrata a <strong>{formData.agent?.name}</strong>. Riceverai una notifica immediata via email e whatsapp.</p>
+                <div className="w-20 h-20 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mb-8"><CheckCircle size={40} /></div>
+                <h2 className="text-4xl font-serif text-[var(--text-primary)] mb-4">Richiesta Inviata</h2>
+                <p className="text-[var(--text-secondary)] text-sm max-w-md mx-auto mb-10 leading-relaxed">Grazie! La richiesta per <strong>{formData.property?.title}</strong> è stata inoltrata a <strong>{formData.agent?.name}</strong>. Riceverai una notifica immediata via email e whatsapp.</p>
                 <div className="flex gap-4 mb-10">
                     <button className="flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-lg text-[10px] font-bold uppercase shadow-md hover:bg-green-700 transition-colors"><MessageSquare size={14} /> WhatsApp</button>
-                    <button className="flex items-center gap-2 px-6 py-2.5 bg-[#1C1917] text-white rounded-lg text-[10px] font-bold uppercase shadow-md hover:bg-[#A18058] transition-colors"><Mail size={14} /> Email</button>
+                    <button className="flex items-center gap-2 px-6 py-2.5 bg-[#1C1917] dark:bg-[#A18058] text-white rounded-lg text-[10px] font-bold uppercase shadow-md hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-colors"><Mail size={14} /> Email</button>
                 </div>
                 <a href={getCalendarLink()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#A18058] text-[10px] font-bold uppercase tracking-widest hover:underline"><CalendarPlus size={16} /> Aggiungi al Calendario</a>
-                <button onClick={onClose} className="mt-12 text-stone-400 text-[10px] uppercase font-bold hover:text-[#1C1917]">Chiudi</button>
+                <button onClick={onClose} className="mt-12 text-[var(--text-tertiary)] text-[10px] uppercase font-bold hover:text-[var(--text-primary)]">Chiudi</button>
               </div>
             )}
           </div>

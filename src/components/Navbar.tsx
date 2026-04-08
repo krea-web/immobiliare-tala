@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { User, ArrowRight, Menu, X, Phone, Mail, ChevronDown, Sparkles, Home, Building, Key, Calculator, Calendar, Info, Users, Send } from 'lucide-react';
+import { User, ArrowRight, Menu, X, Mail, ChevronDown, Building, Key, Calculator, Calendar, Info, Users, Send, Moon, Sun } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   
   const location = useLocation();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -32,23 +32,15 @@ const Navbar: React.FC = () => {
   const isDarkPage = !isReservedArea && (location.pathname === '/' || location.pathname === '/chi-siamo' || location.pathname === '/valuta-il-tuo-immobile');
   const showGlass = scrolled || !isDarkPage || isReservedArea;
   
-  // Navbar text color logic
-  const textColorClass = 'text-[var(--text-primary)]';
-
-  const NavLinkContent = ({ label, isDropdown }: { label: string, isDropdown?: boolean }) => (
-    <div className="group/nav relative w-20 h-20 flex items-center justify-center rounded-full border border-stone-200/50 dark:border-white/10 hover:border-[#A18058] transition-all duration-700 overflow-hidden bg-transparent hover:bg-white/5 backdrop-blur-sm shadow-inner">
-      <div className="flex flex-col items-center transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/nav:-translate-y-full">
-        <div className="h-20 flex flex-col items-center justify-center gap-1 px-2">
-          <span className="text-[9px] font-black uppercase tracking-[0.15em] whitespace-nowrap">{label}</span>
-          {isDropdown && <ChevronDown size={8} className="opacity-50" />}
-        </div>
-        <div className="h-20 flex flex-col items-center justify-center gap-1 px-2 text-[#A18058]">
-          <span className="text-[9px] font-black uppercase tracking-[0.15em] whitespace-nowrap">{label}</span>
-          {isDropdown && <ChevronDown size={8} />}
-        </div>
-      </div>
-    </div>
-  );
+  const isTransparent = !showGlass;
+  const textColorClass = isTransparent ? 'text-white' : 'text-[var(--text-primary)]';
+  const subTextColorClass = isTransparent ? 'text-white/60' : 'text-[var(--text-tertiary)]';
+  const desktopLinkBase = `relative inline-flex items-center gap-2 h-11 px-5 rounded-full text-[11px] font-black uppercase tracking-[0.22em] transition-all duration-500 ${
+    isTransparent
+      ? 'bg-white/0 hover:bg-white/10 border border-white/15 hover:border-white/25'
+      : 'bg-transparent hover:bg-[var(--bg-tertiary)] border border-transparent hover:border-[var(--border-primary)]'
+  }`;
+  const desktopActive = isTransparent ? 'bg-white/10 border-white/25' : 'bg-[var(--bg-tertiary)] border-[var(--border-primary)]';
 
   const menuItems = [
     { label: 'Home', path: '/' },
@@ -59,18 +51,10 @@ const Navbar: React.FC = () => {
         { label: 'Vendita', path: '/vendita', icon: <Building size={14} /> },
         { label: 'Affitto', path: '/affitto', icon: <Key size={14} /> },
         { label: 'Valutazione', path: '/valuta-il-tuo-immobile', icon: <Calculator size={14} /> },
-        { label: 'Prenota una Visita', path: '/prenota', icon: <Calendar size={14} /> },
+        { label: 'Prenota una Visita', path: '/prenota-una-visita', icon: <Calendar size={14} /> },
       ]
     },
-    { 
-      label: 'Chi Siamo', 
-      path: '#',
-      dropdown: [
-        { label: 'La Nostra Mission', path: '/chi-siamo#mission', icon: <Info size={14} /> },
-        { label: 'Il Nostro Team', path: '/chi-siamo#team', icon: <Users size={14} /> },
-        { label: 'Contatti', path: '/chi-siamo#contatti', icon: <Send size={14} /> },
-      ]
-    },
+    { label: 'Chi Siamo', path: '/chi-siamo' },
   ];
 
   return (
@@ -91,14 +75,14 @@ const Navbar: React.FC = () => {
                     <span className="font-serif italic text-lg pr-0.5">T</span>
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-[10px] uppercase tracking-[0.25em] font-medium leading-none mb-0.5 text-[var(--text-tertiary)]">Immobiliare</span>
+                    <span className={`text-[10px] uppercase tracking-[0.25em] font-medium leading-none mb-0.5 ${subTextColorClass}`}>Immobiliare</span>
                     <span className={`font-serif text-xl leading-none tracking-tight ${textColorClass}`}>Tala</span>
                 </div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex items-center absolute left-1/2 -translate-x-1/2 gap-2">
+          <div ref={dropdownRef} className="hidden xl:flex items-center absolute left-1/2 -translate-x-1/2 gap-3">
             {menuItems.map((item, idx) => (
               <div 
                 key={idx} 
@@ -107,28 +91,36 @@ const Navbar: React.FC = () => {
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 {item.dropdown ? (
-                  <button className={`transition-colors p-1 ${textColorClass}`}>
-                    <NavLinkContent label={item.label} isDropdown />
+                  <button
+                    type="button"
+                    onClick={() => setActiveDropdown((prev) => (prev === item.label ? null : item.label))}
+                    className={`${desktopLinkBase} ${textColorClass} ${activeDropdown === item.label ? desktopActive : ''}`}
+                  >
+                    <span>{item.label}</span>
+                    <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === item.label ? 'rotate-180' : ''}`} />
                   </button>
                 ) : (
-                  <Link to={item.path} className={`transition-colors p-1 ${textColorClass}`}>
-                    <NavLinkContent label={item.label} />
+                  <Link
+                    to={item.path}
+                    className={`${desktopLinkBase} ${textColorClass} ${location.pathname === item.path ? desktopActive : ''}`}
+                  >
+                    <span>{item.label}</span>
                   </Link>
                 )}
 
                 {/* Dropdown Menu */}
                 {item.dropdown && (
-                  <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-500 ${activeDropdown === item.label ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
-                    <div className="bg-white dark:bg-black border border-stone-200 dark:border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden min-w-[280px] p-4 backdrop-blur-xl">
+                  <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-500 ${activeDropdown === item.label ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-3 pointer-events-none'}`}>
+                    <div className="bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-[2rem] shadow-2xl overflow-hidden min-w-[320px] p-3 backdrop-blur-xl">
                       <div className="grid grid-cols-1 gap-2">
                         {item.dropdown.map((sub, sIdx) => (
                           <Link 
                             key={sIdx} 
                             to={sub.path}
-                            className="flex items-center justify-between px-6 py-4 rounded-2xl text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-white/5 hover:text-stone-900 dark:hover:text-white transition-all group/sub"
+                            className="flex items-center justify-between px-5 py-4 rounded-2xl text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)] transition-all group/sub"
                           >
                             <div className="flex items-center gap-4">
-                              <span className="w-10 h-10 rounded-full bg-stone-50 dark:bg-white/5 flex items-center justify-center text-[#A18058] group-hover/sub:bg-[#A18058] group-hover/sub:text-white transition-all duration-500 shadow-sm">
+                              <span className="w-10 h-10 rounded-full bg-[var(--bg-tertiary)] flex items-center justify-center text-[#A18058] group-hover/sub:bg-[#A18058] group-hover/sub:text-white transition-all duration-500 shadow-sm">
                                 {sub.icon}
                               </span>
                               <span className="text-[10px] font-bold uppercase tracking-widest">{sub.label}</span>
@@ -146,6 +138,17 @@ const Navbar: React.FC = () => {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4 md:gap-6">
+            <button
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Passa a tema chiaro' : 'Passa a tema scuro'}
+              className={`hidden md:flex w-11 h-11 rounded-full items-center justify-center border transition-all duration-500 hover:scale-105 active:scale-95 ${
+                isTransparent
+                  ? 'bg-white/10 text-white border-white/20 hover:bg-white/20'
+                  : 'bg-[var(--bg-secondary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:bg-[var(--bg-tertiary)]'
+              }`}
+            >
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             <Link 
               to="/area-riservata" 
               className="group/btn relative h-11 px-6 rounded-full flex items-center justify-center transition-all duration-500 overflow-hidden bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-primary)] hover:scale-105 active:scale-95 shadow-xl hover:shadow-[0_0_30px_rgba(161,128,88,0.3)]"

@@ -3,7 +3,7 @@
 // You can find this in your Google Sheet URL: https://docs.google.com/spreadsheets/d/[THIS_IS_THE_ID]/edit
 const SPREADSHEET_ID = 'INSERISCI_QUI_IL_TUO_SPREADSHEET_ID';
 
-const API_KEY = process.env.API_KEY;
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY || '';
 
 export interface SheetProperty {
   id: number;

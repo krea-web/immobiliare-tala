@@ -24,18 +24,18 @@ const Home: React.FC = () => {
         onOpenSales={() => navigate('/vendita')}
       />
       <Partners />
-      <MapExplorer onOpenBooking={() => navigate('/prenota')} />
+      <MapExplorer onOpenBooking={() => navigate('/prenota-una-visita')} />
       <Listings 
         onOpenSales={(id) => navigate(`/vendita?id=${id}`)} 
       />
       <RentalShowcase 
         onOpenRentals={(id) => navigate(`/affitto?id=${id}`)}
-        onOpenBooking={() => navigate('/prenota')} 
+        onOpenBooking={() => navigate('/prenota-una-visita')} 
       />
       <Testimonials />
       <CTA 
         onOpenValuation={() => navigate('/valuta-il-tuo-immobile')} 
-        onOpenBooking={() => navigate('/prenota')}
+        onOpenBooking={() => navigate('/prenota-una-visita')}
       />
       <DiscoveryCTA onOpenAbout={() => navigate('/chi-siamo')} />
     </div>

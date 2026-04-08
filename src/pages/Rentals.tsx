@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { 
   MapPin, BedDouble, Bath, Users,
@@ -8,9 +8,7 @@ import {
 } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 import SEO from '../components/SEO';
-
-// Declare Leaflet global
-declare const L: any;
+import MapExplorer from '../components/MapExplorer';
 
 const VIBES = ['Tutti', 'Fronte Mare', 'Con Piscina', 'Stazzo Storico', 'Privacy Totale'];
 
@@ -73,9 +71,6 @@ const Rentals: React.FC = () => {
   const { toggleFavorite, isFavorite } = useFavorites();
   const [loading, setLoading] = useState(true);
 
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<any>(null);
-
   const filteredProperties = useMemo(() => {
     return INITIAL_RENTAL_PROPERTIES.filter(p => {
         if (activeVibe !== 'Tutti' && p.vibe !== activeVibe && p.type !== activeVibe) return false;
@@ -89,33 +84,32 @@ const Rentals: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!loading && mapContainerRef.current && typeof L !== 'undefined') {
-      if (mapRef.current) {
-        mapRef.current.remove();
-      }
+    if (loading) return;
+    if (!initialPropertyId) return;
+    const id = Number(initialPropertyId);
+    if (!Number.isFinite(id)) return;
+    const found = INITIAL_RENTAL_PROPERTIES.find(p => p.id === id);
+    if (found) setSelectedVilla(found);
+  }, [loading, initialPropertyId]);
 
-      const map = L.map(mapContainerRef.current, {
-        center: [40.83, 9.67],
-        zoom: 11,
-        zoomControl: false,
-        scrollWheelZoom: false
-      });
-
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{y}/{x}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(map);
-
-      mapRef.current = map;
-
-      filteredProperties.forEach(prop => {
-        const marker = L.marker([prop.lat, prop.lng]).addTo(map);
-        marker.on('click', () => {
-          setSelectedVilla(prop);
-          map.flyTo([prop.lat, prop.lng], 13);
-        });
-      });
-    }
-  }, [loading, filteredProperties]);
+  const mapItems = useMemo(() => {
+    return INITIAL_RENTAL_PROPERTIES.map(p => ({
+      id: p.id,
+      title: p.title,
+      location: p.location,
+      price: `€ ${p.pricePerNight} /notte`,
+      image: p.image,
+      beds: p.bedrooms,
+      baths: p.bathrooms,
+      sqm: `${p.sleeps} ospiti`,
+      rating: '5.0',
+      description: `Soggiorno esclusivo: ${p.type}.`,
+      features: p.features,
+      lat: p.lat,
+      lng: p.lng,
+      listingType: 'rental' as const
+    }));
+  }, []);
 
   return (
     <div className="pt-20 min-h-screen bg-[var(--bg-primary)] transition-colors duration-500">
@@ -146,11 +140,17 @@ const Rentals: React.FC = () => {
         </div>
       </header>
 
+      <MapExplorer
+        items={mapItems}
+        bookingLabel="Prenota Soggiorno"
+        onOpenBooking={(prop) => navigate(`/prenota?villa=${prop?.id ?? ''}`)}
+      />
+
       <section className="pb-32 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12">
           
           {/* List View */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="space-y-8">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-40">
                 <Loader2 className="w-12 h-12 text-[#A18058] animate-spin mb-6" />
@@ -195,7 +195,10 @@ const Rentals: React.FC = () => {
                           <span key={i} className="text-[8px] font-bold uppercase tracking-widest px-2 py-1 bg-[var(--bg-tertiary)] text-[var(--text-tertiary)] rounded-md">{f}</span>
                         ))}
                       </div>
-                      <button className="text-[var(--text-primary)] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 group-hover:text-[#A18058] transition-colors">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setSelectedVilla(prop); }}
+                        className="text-[var(--text-primary)] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 group-hover:text-[#A18058] transition-colors"
+                      >
                         Dettagli <ArrowRight size={14} />
                       </button>
                     </div>
@@ -203,11 +206,6 @@ const Rentals: React.FC = () => {
                 </div>
               ))
             )}
-          </div>
-
-          {/* Map View - Sticky on Desktop */}
-          <div className="lg:col-span-5 h-[400px] lg:h-[700px] sticky top-28 rounded-[2.5rem] overflow-hidden border border-[var(--border-primary)] shadow-inner order-first lg:order-last">
-            <div ref={mapContainerRef} className="w-full h-full bg-[var(--bg-tertiary)]" />
           </div>
 
         </div>
@@ -262,7 +260,10 @@ const Rentals: React.FC = () => {
               ))}
             </div>
 
-            <button onClick={() => navigate('/prenota')} className="w-full py-5 bg-[#1C1917] dark:bg-[#A18058] text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-all flex items-center justify-center gap-3 shadow-xl">
+            <button
+              onClick={() => navigate(`/prenota?villa=${selectedVilla.id}&guests=${guests}`)}
+              className="w-full py-5 bg-[#1C1917] dark:bg-[#A18058] text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-[#A18058] dark:hover:bg-white dark:hover:text-[#1C1917] transition-all flex items-center justify-center gap-3 shadow-xl"
+            >
               Verifica Disponibilità
             </button>
           </div>
