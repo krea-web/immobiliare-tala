@@ -52,6 +52,7 @@ const Navbar: React.FC = () => {
         { label: 'Affitto', path: '/affitto', icon: <Key size={14} /> },
         { label: 'Valutazione', path: '/valuta-il-tuo-immobile', icon: <Calculator size={14} /> },
         { label: 'Prenota una Visita', path: '/prenota-una-visita', icon: <Calendar size={14} /> },
+        { label: 'Brochure & Magazine', path: '/brochure-and-magazine', icon: <Info size={14} /> },
       ]
     },
     { label: 'Chi Siamo', path: '/chi-siamo' },

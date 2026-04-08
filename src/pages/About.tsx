@@ -7,7 +7,7 @@ import {
   CalendarCheck, ThumbsUp, PhoneCall, Map, Send, Camera, 
   Briefcase, Menu, LogOut, ChevronRight, ChevronDown, 
   Download, BedDouble, Bath, Search, History, Calendar, 
-  Save, AlertCircle, Zap
+  Save, AlertCircle, Zap, Sparkles
 } from 'lucide-react';
 import SEO from '../components/SEO';
 
@@ -141,15 +141,15 @@ const About: React.FC = () => {
   const [activeStatIndex, setActiveStatIndex] = useState(0);
 
   const messagesData = [
-    { name: "Marco V.", text: "Disponibile per Agosto?", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200" },
-    { name: "Sofia R.", text: "Prezzo Villa Pevero?", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200" },
-    { name: "James L.", text: "Any off-market listings?", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200" }
+    { name: "giulia.r", text: "Ciao! Disponibile Villa Sabina dal 10 al 17?", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200" },
+    { name: "mattia.v", text: "Mi mandate info su Porto San Paolo?", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200" },
+    { name: "alex.l", text: "Avete reel con tour interni?", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200" }
   ];
 
   const statsData = [
-    { label: "Reach Mensile", value: "+124%", icon: BarChart3 },
-    { label: "Nuovi Lead", value: "85", icon: TrendingUp },
-    { label: "ROI Clienti", value: "18%", icon: CheckCircle2 }
+    { label: "Story Views", value: "48K", icon: Eye },
+    { label: "DM Risposte", value: "2h", icon: MessageCircle },
+    { label: "Reach Mensile", value: "+124%", icon: BarChart3 }
   ];
 
   useEffect(() => {
@@ -297,6 +297,39 @@ const About: React.FC = () => {
                   </button>
               </div>
 
+              <div className="mb-20">
+                  <div className="rounded-[3rem] overflow-hidden border border-[var(--border-primary)] bg-[var(--bg-secondary)] shadow-2xl">
+                      <div className="grid lg:grid-cols-5">
+                          <div className="lg:col-span-2 p-10 md:p-12">
+                              <span className="text-[#A18058] text-[10px] font-bold uppercase tracking-[0.5em] mb-6 block">Uffici Sardegna</span>
+                              <h3 className="text-3xl font-serif text-[var(--text-primary)] italic mb-6">Viale Murta Maria, 70</h3>
+                              <p className="text-[var(--text-secondary)] font-light leading-relaxed">
+                                  07026 Olbia (SS), Italia
+                              </p>
+                              <div className="mt-10 flex items-center gap-4">
+                                  <div className="w-12 h-12 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-primary)] flex items-center justify-center text-[#A18058]">
+                                      <MapPin size={18} />
+                                  </div>
+                                  <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
+                                      Punto fisso sulla mappa
+                                  </p>
+                              </div>
+                          </div>
+                          <div className="lg:col-span-3 bg-[var(--bg-tertiary)] border-t lg:border-t-0 lg:border-l border-[var(--border-primary)]">
+                              <div className="w-full h-[360px] lg:h-full">
+                                  <iframe
+                                      title="Uffici Sardegna - Immobiliare Tala"
+                                      className="w-full h-full"
+                                      loading="lazy"
+                                      referrerPolicy="no-referrer-when-downgrade"
+                                      src="https://www.google.com/maps?q=Viale%20Murta%20Maria%2C%2070%2C%2007026%20Olbia%20SS&output=embed"
+                                  />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
               <div className="grid lg:grid-cols-2 gap-20">
                   {AGENTS.map((agent) => (
                       <div key={agent.id} className="group flex flex-col md:flex-row gap-10 items-center md:items-stretch">
@@ -325,19 +358,22 @@ const About: React.FC = () => {
           </div>
       </section>
 
-      {/* 5. THE CONCIERGE EXPERIENCE - SMARTPHONE INTERFACE */}
       <section className="py-32 bg-black relative overflow-hidden" id="lavora-con-noi">
+          <div className="absolute inset-0">
+              <div className="absolute -top-32 -right-32 w-[520px] h-[520px] bg-[#A18058]/15 blur-[140px] rounded-full"></div>
+              <div className="absolute -bottom-40 -left-32 w-[620px] h-[620px] bg-[#A18058]/10 blur-[160px] rounded-full"></div>
+              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06]"></div>
+          </div>
+
           <div className="max-w-7xl mx-auto px-8 relative z-10">
               <div className="grid lg:grid-cols-2 gap-24 items-center">
-                  <div className="order-2 lg:order-1 relative h-[700px] flex items-center justify-center">
-                      {/* Phone Container */}
+                  <div className="order-2 lg:order-1 relative h-[720px] flex items-center justify-center">
                       <div 
                         onMouseMove={handlePhoneMouseMove}
                         onMouseLeave={() => { setPhoneRotate({ x: 0, y: 0 }); setIsHoveringPhone(false); }}
-                        className="relative w-[320px] h-[650px] bg-[#1C1917] rounded-[3.5rem] border-[8px] border-[#262626] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-500 ease-out z-20"
+                        className="relative w-[320px] h-[650px] bg-[#1C1917] rounded-[3.5rem] border-[8px] border-[#262626] shadow-[0_50px_110px_-20px_rgba(0,0,0,0.65)] overflow-hidden transition-all duration-500 ease-out z-20"
                         style={{ transform: `perspective(1000px) rotateX(${phoneRotate.x}deg) rotateY(${phoneRotate.y}deg)` }}
                       >
-                          {/* Screen Header */}
                           <div className="h-14 bg-[#1C1917] flex items-center justify-between px-8 pt-4">
                               <div className="text-white text-xs font-bold">9:41</div>
                               <div className="flex gap-1.5">
@@ -346,78 +382,133 @@ const About: React.FC = () => {
                               </div>
                           </div>
 
-                          {/* App Content */}
-                          <div className="p-6 h-full bg-[#FAFAF9]">
-                              <div className="flex items-center gap-3 mb-8">
-                                  <div className="w-10 h-10 bg-[#1C1917] rounded-xl flex items-center justify-center text-white font-serif">T</div>
-                                  <div>
-                                      <p className="text-[10px] font-bold uppercase tracking-widest text-[#A18058]">Tala Concierge</p>
-                                      <p className="text-[8px] text-stone-400">Sempre Online • Proattivo</p>
+                          <div className="h-full bg-white">
+                              <div className="px-6 pt-5 pb-4 border-b border-stone-100 flex items-center justify-between">
+                                  <div className="flex items-center gap-3">
+                                      <div className="p-[2px] rounded-full bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af]">
+                                          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop" className="w-9 h-9 rounded-full object-cover border-2 border-white" alt="Immobiliare Tala" />
+                                      </div>
+                                      <div>
+                                          <p className="text-[10px] font-black uppercase tracking-widest text-stone-900">immobiliaretala</p>
+                                          <p className="text-[8px] text-stone-400">Luxury Real Estate • Sardegna</p>
+                                      </div>
+                                  </div>
+                                  <div className="text-stone-900 flex items-center gap-3">
+                                      <span className="w-2 h-2 rounded-full bg-stone-900"></span>
+                                      <span className="w-2 h-2 rounded-full bg-stone-900"></span>
+                                      <span className="w-2 h-2 rounded-full bg-stone-900"></span>
                                   </div>
                               </div>
 
-                              <div className="space-y-4">
-                                  {messagesData.map((msg, idx) => (
-                                      <div key={idx} className={`flex gap-3 transition-all duration-500 ${idx === activeMessageIndex ? 'opacity-100 translate-x-0' : 'opacity-30 -translate-x-4 scale-95'}`}>
-                                          <img src={msg.avatar} className="w-8 h-8 rounded-full object-cover shrink-0 shadow-md" alt="Avatar" />
-                                          <div className="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-stone-100">
-                                              <p className="text-[8px] font-bold text-stone-400 mb-1">{msg.name}</p>
-                                              <p className="text-[10px] text-stone-700 font-medium leading-tight">{msg.text}</p>
+                              <div className="px-6 py-5">
+                                  <div className="flex items-center justify-between mb-4">
+                                      <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">DM in arrivo</p>
+                                      <p className="text-[9px] font-bold uppercase tracking-widest text-[#A18058]">Rispondi</p>
+                                  </div>
+                                  <div className="space-y-3">
+                                      {messagesData.map((msg, idx) => (
+                                          <div key={idx} className={`flex gap-3 transition-all duration-500 ${idx === activeMessageIndex ? 'opacity-100 translate-x-0' : 'opacity-30 -translate-x-4 scale-95'}`}>
+                                              <img src={msg.avatar} className="w-8 h-8 rounded-full object-cover shrink-0 shadow-md" alt={msg.name} />
+                                              <div className="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-stone-100 flex-1">
+                                                  <p className="text-[8px] font-bold text-stone-400 mb-1">@{msg.name}</p>
+                                                  <p className="text-[10px] text-stone-700 font-medium leading-tight">{msg.text}</p>
+                                              </div>
                                           </div>
+                                      ))}
+                                  </div>
+                              </div>
+
+                              <div className="px-6 pb-6">
+                                  <div className="rounded-2xl overflow-hidden border border-stone-100 shadow-sm">
+                                      <div className="h-40 bg-stone-100 overflow-hidden">
+                                          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=900&auto=format&fit=crop" className="w-full h-full object-cover" alt="Post" />
                                       </div>
-                                  ))}
-                                  
-                                  <div className="flex justify-end gap-3 opacity-90">
-                                      <div className="bg-[#1C1917] text-white p-3 rounded-2xl rounded-tr-none shadow-xl max-w-[80%]">
-                                          <p className="text-[10px] font-light leading-tight">Certamente. Le ho inviato il report via email e ho attivato l'alert per Porto Cervo.</p>
+                                      <div className="p-4">
+                                          <p className="text-[10px] text-stone-700 font-medium leading-snug">
+                                              Tour rapido in villa: dettagli, vista mare e materiali autentici. Salvare per la prossima visita.
+                                          </p>
                                       </div>
                                   </div>
                               </div>
 
-                              {/* Interactive Stats inside phone */}
-                              <div className="absolute bottom-24 left-6 right-6">
-                                  <div className="bg-white/80 backdrop-blur-md p-4 rounded-[2rem] border border-white shadow-xl">
+                              <div className="absolute bottom-20 left-6 right-6">
+                                  <div className="bg-white/90 backdrop-blur-md p-4 rounded-[2rem] border border-stone-100 shadow-xl">
                                       <div className="flex items-center justify-between mb-3">
-                                          <p className="text-[9px] font-bold uppercase text-stone-400">Activity Analytics</p>
+                                          <p className="text-[9px] font-bold uppercase text-stone-400">Instagram Insights</p>
                                           {React.createElement(statsData[activeStatIndex].icon, { size: 12, className: "text-[#A18058]" })}
                                       </div>
-                                      <p className="text-2xl font-serif text-[#1C1917] leading-none mb-1">{statsData[activeStatIndex].value}</p>
+                                      <p className="text-2xl font-serif text-stone-900 leading-none mb-1">{statsData[activeStatIndex].value}</p>
                                       <p className="text-[8px] font-bold uppercase text-[#A18058] tracking-widest">{statsData[activeStatIndex].label}</p>
                                   </div>
                               </div>
+
+                              <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-stone-100 flex items-center justify-around">
+                                  <IGHome />
+                                  <IGSearch />
+                                  <IGAdd />
+                                  <IGReels />
+                                  <IGHome />
+                              </div>
                           </div>
                       </div>
 
-                      {/* Floating Decorative Elements */}
-                      <div className="absolute top-1/4 -left-12 w-48 h-48 bg-[#A18058]/20 blur-[80px] rounded-full"></div>
-                      <div className="absolute bottom-1/4 -right-12 w-64 h-64 bg-[#A18058]/10 blur-[100px] rounded-full"></div>
+                      <div className="absolute top-20 -left-6 w-44 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-xl p-5 shadow-2xl">
+                          <p className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2">Stories</p>
+                          <div className="flex gap-2">
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] p-[2px]">
+                                  <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200" className="w-full h-full rounded-full object-cover border-2 border-black" alt="Story" />
+                              </div>
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] p-[2px]">
+                                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200" className="w-full h-full rounded-full object-cover border-2 border-black" alt="Story" />
+                              </div>
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] p-[2px]">
+                                  <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200" className="w-full h-full rounded-full object-cover border-2 border-black" alt="Story" />
+                              </div>
+                          </div>
+                      </div>
+
+                      <div className="absolute bottom-24 -right-10 w-56 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-xl p-5 shadow-2xl">
+                          <p className="text-[9px] font-bold uppercase tracking-widest text-white/60 mb-2">Nuovi post</p>
+                          <div className="rounded-xl overflow-hidden bg-black/20 border border-white/10">
+                              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" className="w-full h-20 object-cover" alt="Post" />
+                          </div>
+                          <p className="text-[10px] text-white/70 mt-3 font-medium">Anteprime, tour e backstage.</p>
+                      </div>
                   </div>
 
                   <div className="order-1 lg:order-2">
-                      <span className="text-[#A18058] text-[10px] font-bold uppercase tracking-[0.5em] mb-6 block">Il futuro è ora</span>
+                      <span className="text-[#A18058] text-[10px] font-bold uppercase tracking-[0.5em] mb-6 block">Instagram Presence</span>
                       <h2 className="text-5xl md:text-7xl font-serif text-white mb-10 leading-[0.9] tracking-tighter">
                           Smart. <br /> <span className="italic">Connected.</span> <br /> <span className="text-[#A18058]">Human.</span>
                       </h2>
-                      <div className="space-y-10">
+                      <p className="text-stone-400 text-lg font-light leading-relaxed max-w-xl mb-12">
+                          Il nostro profilo Instagram è la vetrina più diretta: tour in reel, stories con disponibilità aggiornate, dettagli di progetto e dietro le quinte sul territorio.
+                      </p>
+
+                      <div className="space-y-8 mb-12">
                           <div className="flex gap-6 group">
                               <div className="w-14 h-14 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center text-[#A18058] group-hover:bg-[#A18058] group-hover:text-white transition-all duration-500">
-                                  <Zap size={24} />
+                                  <Camera size={24} />
                               </div>
                               <div>
-                                  <h4 className="text-white text-lg font-serif mb-2">Automazione Intelligente</h4>
-                                  <p className="text-stone-500 text-sm font-light leading-relaxed">Utilizziamo n8n e AI per gestire lead, contratti e follow-up in millisecondi, lasciando al team il tempo per il valore umano.</p>
+                                  <h4 className="text-white text-lg font-serif mb-2">Reel & Tour</h4>
+                                  <p className="text-stone-500 text-sm font-light leading-relaxed">Video brevi con dettagli architettonici, vista e atmosfera. Ideali per una prima selezione rapida.</p>
                               </div>
                           </div>
                           <div className="flex gap-6 group">
                               <div className="w-14 h-14 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center text-[#A18058] group-hover:bg-[#A18058] group-hover:text-white transition-all duration-500">
-                                  <BarChart3 size={24} />
+                                  <Sparkles size={24} />
                               </div>
                               <div>
-                                  <h4 className="text-white text-lg font-serif mb-2">Real-Time Analytics</h4>
-                                  <p className="text-stone-500 text-sm font-light leading-relaxed">Ogni decisione è supportata da dati reali sul mercato sardo, incrociando portali, rogiti e trend stagionali.</p>
+                                  <h4 className="text-white text-lg font-serif mb-2">Stories in tempo reale</h4>
+                                  <p className="text-stone-500 text-sm font-light leading-relaxed">Aggiornamenti su disponibilità, momenti di location e novità. Con risposte rapide via DM.</p>
                               </div>
                           </div>
                       </div>
+
+                      <a href="https://www.instagram.com/immobiliaretala/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-4 px-8 py-4 rounded-full bg-[#A18058] text-white font-bold uppercase tracking-widest text-[10px] hover:bg-white hover:text-[#1C1917] transition-colors shadow-2xl">
+                          Apri Instagram <ArrowRight size={16} />
+                      </a>
                   </div>
               </div>
           </div>
@@ -426,16 +517,19 @@ const About: React.FC = () => {
       {/* 6. CONTACT SECTION - MINIMALIST */}
       <section className="py-32 bg-[var(--bg-primary)]" id="contatti" ref={contactSectionRef}>
           <div className="max-w-7xl mx-auto px-8">
-              <div className="bg-[var(--bg-secondary)] rounded-[4rem] overflow-hidden shadow-2xl relative border border-[var(--border-primary)]">
+              <div className="bg-[var(--bg-secondary)] rounded-[4rem] overflow-hidden shadow-2xl relative border border-[#A18058]/30">
                   <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]"></div>
+                  <div className="absolute -top-40 -right-40 w-[520px] h-[520px] bg-[#A18058]/10 blur-[140px] rounded-full"></div>
                   <div className="grid lg:grid-cols-2">
                       <div className="p-16 md:p-24 relative z-10">
-                          <h2 className="text-5xl font-serif text-[var(--text-primary)] mb-8 italic">Parliamo del Tuo prossimo Asset.</h2>
+                          <h2 className="text-5xl font-serif text-[var(--text-primary)] mb-8 italic leading-[0.95]">
+                              Parliamo del <span className="not-italic bg-gradient-to-r from-[#A18058] via-[#D7B587] to-[#A18058] bg-clip-text text-transparent">Tuo prossimo</span> Asset.
+                          </h2>
                           <p className="text-[var(--text-secondary)] text-lg font-light mb-16">Sia che tu voglia vendere, acquistare o collaborare, il nostro team è a Tua completa disposizione per una consulenza privata.</p>
                           
                           <div className="space-y-8">
                               <div className="flex items-center gap-6">
-                                  <div className="w-12 h-12 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-primary)] flex items-center justify-center text-[#A18058]">
+                                  <div className="w-12 h-12 rounded-full bg-[#A18058]/10 border border-[#A18058]/30 flex items-center justify-center text-[#A18058]">
                                       <Phone size={20} />
                                   </div>
                                   <div>
@@ -444,12 +538,12 @@ const About: React.FC = () => {
                                   </div>
                               </div>
                               <div className="flex items-center gap-6">
-                                  <div className="w-12 h-12 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-primary)] flex items-center justify-center text-[#A18058]">
+                                  <div className="w-12 h-12 rounded-full bg-[#A18058]/10 border border-[#A18058]/30 flex items-center justify-center text-[#A18058]">
                                       <MapPin size={20} />
                                   </div>
                                   <div>
-                                      <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-1">Sede Principale</p>
-                                      <p className="text-[var(--text-primary)] font-medium">Viale Murta Maria, 70, Olbia</p>
+                                      <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-1">Uffici Sardegna</p>
+                                      <p className="text-[var(--text-primary)] font-medium">Viale Murta Maria, 70 • 07026 Olbia (SS)</p>
                                   </div>
                               </div>
                           </div>
@@ -480,8 +574,8 @@ const About: React.FC = () => {
                                   <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary)]">Messaggio</label>
                                   <textarea rows={4} className="w-full bg-transparent border-b border-[var(--border-primary)] py-3 text-[var(--text-primary)] focus:border-[#A18058] outline-none transition-all font-light resize-none" placeholder="Come possiamo aiutarLa?"></textarea>
                               </div>
-                              <button className="btn-super-glow relative w-full bg-[var(--text-primary)] text-[var(--bg-primary)] py-6 rounded-2xl text-[11px] font-bold uppercase tracking-[0.3em] overflow-hidden group">
-                                  <div className="btn-inner-bg bg-[var(--text-primary)]"></div>
+                              <button className="btn-super-glow relative w-full bg-[#A18058] text-white py-6 rounded-2xl text-[11px] font-bold uppercase tracking-[0.3em] overflow-hidden group hover:bg-white hover:text-[#1C1917] transition-colors">
+                                  <div className="btn-inner-bg bg-[#A18058] group-hover:bg-white"></div>
                                   <span className="relative z-10 flex items-center justify-center gap-3">
                                       Invia Richiesta <ArrowRight size={16} />
                                   </span>

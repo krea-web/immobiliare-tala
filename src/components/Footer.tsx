@@ -1,115 +1,88 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Linkedin, Facebook, ArrowUpRight } from 'lucide-react';
+import { Instagram, Linkedin, Facebook, ArrowRight, Phone, MapPin, Mail } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[var(--bg-primary)] pt-24 pb-12 border-t border-[var(--border-primary)] relative overflow-hidden transition-colors duration-500">
-      {/* Subtle Texture */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 pointer-events-none"></div>
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 mb-20">
-          
-          {/* Brand Column */}
-          <div className="md:col-span-4 lg:col-span-4">
-            <Link 
-              to="/" 
-              className="flex items-center gap-3 mb-8 group"
-            >
-              <div className="w-8 h-8 bg-[var(--text-primary)] text-[var(--bg-primary)] flex items-center justify-center rounded-sm shadow-md transition-transform duration-300 group-hover:scale-110">
-                <span className="font-serif italic text-sm pr-0.5">T</span>
+    <footer className="bg-[var(--bg-secondary)] border-t border-[var(--border-primary)] relative overflow-hidden transition-colors duration-500">
+      <div className="absolute -top-40 -right-40 w-[520px] h-[520px] bg-[#A18058]/10 blur-[140px] rounded-full"></div>
+      <div className="absolute -bottom-40 -left-40 w-[620px] h-[620px] bg-[#A18058]/8 blur-[160px] rounded-full"></div>
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.04] pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
+        <div className="rounded-[2.5rem] border border-[#A18058]/30 bg-[#A18058]/10 p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#A18058] text-white flex items-center justify-center font-serif text-xl italic">T</div>
+            <p className="text-sm text-[var(--text-primary)]">Consulenza d’élite per il tuo prossimo asset in Sardegna.</p>
+          </div>
+          <Link to="/valuta-il-tuo-immobile" className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#A18058] text-white text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-white hover:text-[#1C1917] transition-colors">
+            Valuta il Tuo Immobile <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mt-12">
+          <div className="md:col-span-4 space-y-6">
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-9 h-9 bg-[var(--text-primary)] text-[var(--bg-primary)] flex items-center justify-center rounded-sm shadow-md group-hover:scale-110 transition-transform">
+                <span className="font-serif italic text-lg pr-0.5">T</span>
               </div>
-              <div className="flex flex-col">
-                <span className="text-[9px] uppercase tracking-[0.25em] text-[var(--text-tertiary)] font-medium leading-none mb-0.5">Immobiliare</span>
-                <span className="font-serif text-xl leading-none text-[var(--text-primary)] tracking-tight">Tala</span>
-              </div>
+              <span className="font-serif text-xl leading-none text-[var(--text-primary)] tracking-tight">Immobiliare Tala</span>
             </Link>
-            
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-8 font-light max-w-xs">
-              Sede Principale<br />
-              Via Monte Napoleone, 18<br />
-              20121 Milano, Italia<br /><br />
-              Uffici Sardegna<br />
-              Viale Murta Maria, 70<br />
-              07026 Olbia (SS)
-            </p>
-            
-            <div className="flex gap-4">
-              <a href="https://www.instagram.com/immobiliaretala/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[var(--border-primary)] rounded-full flex items-center justify-center text-[var(--text-tertiary)] hover:text-[#E1306C] hover:border-[#E1306C] hover:bg-[var(--bg-secondary)] transition-all duration-300">
+            <div className="text-xs text-[var(--text-secondary)] space-y-2">
+              <div className="flex items-start gap-3">
+                <MapPin size={16} className="text-[#A18058] mt-[2px]" />
+                <span>Viale Murta Maria, 70 • 07026 Olbia (SS)</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <Phone size={16} className="text-[#A18058] mt-[2px]" />
+                <span>+39 0789 123456</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <Mail size={16} className="text-[#A18058] mt-[2px]" />
+                <span>info@immobiliaretala.it</span>
+              </div>
+            </div>
+            <div className="flex gap-3 pt-2">
+              <a href="https://www.instagram.com/immobiliaretala/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-[var(--border-primary)] flex items-center justify-center text-[var(--text-tertiary)] hover:bg-[#A18058] hover:text-white transition-colors">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="w-10 h-10 border border-[var(--border-primary)] rounded-full flex items-center justify-center text-[var(--text-tertiary)] hover:text-[#0077B5] hover:border-[#0077B5] hover:bg-[var(--bg-secondary)] transition-all duration-300">
+              <a href="#" className="w-10 h-10 rounded-full border border-[var(--border-primary)] flex items-center justify-center text-[var(--text-tertiary)] hover:bg-[#A18058] hover:text-white transition-colors">
                 <Linkedin size={18} />
               </a>
-              <a href="#" className="w-10 h-10 border border-[var(--border-primary)] rounded-full flex items-center justify-center text-[var(--text-tertiary)] hover:text-[#1877F2] hover:border-[#1877F2] hover:bg-[var(--bg-secondary)] transition-all duration-300">
+              <a href="#" className="w-10 h-10 rounded-full border border-[var(--border-primary)] flex items-center justify-center text-[var(--text-tertiary)] hover:bg-[#A18058] hover:text-white transition-colors">
                 <Facebook size={18} />
               </a>
             </div>
           </div>
 
-          {/* Navigation Column */}
-          <div className="md:col-span-3 lg:col-span-2 md:col-start-6 lg:col-start-7">
-            <h4 className="font-bold text-[var(--text-primary)] text-[10px] uppercase tracking-[0.2em] mb-8 relative inline-block">
-              Esplora
-              <span className="absolute -bottom-2 left-0 w-8 h-[1px] bg-[#A18058]"></span>
-            </h4>
-            <ul className="space-y-4">
-              <li>
-                <Link to="/vendita" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:translate-x-1 transition-all duration-300 flex items-center gap-2 group">
-                  Proprietà <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#A18058]">→</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/vendita" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:translate-x-1 transition-all duration-300 flex items-center gap-2 group">
-                  Nuove Acquisizioni <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#A18058]">→</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/valuta-il-tuo-immobile" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[#A18058] hover:translate-x-1 transition-all duration-300 flex items-center gap-2 group">
-                  Vendi con noi <ArrowUpRight size={10} className="text-[#A18058]" />
-                </Link>
-              </li>
-            </ul>
+          <div className="md:col-span-4 space-y-4">
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-tertiary)]">Esplora</h4>
+            <div className="grid grid-cols-2 gap-3">
+              <Link to="/vendita" className="px-4 py-3 rounded-xl border border-[var(--border-primary)] hover:border-[#A18058] hover:text-[var(--text-primary)] text-[11px] font-bold uppercase tracking-widest">Vendita</Link>
+              <Link to="/affitto" className="px-4 py-3 rounded-xl border border-[var(--border-primary)] hover:border-[#A18058] text-[11px] font-bold uppercase tracking-widest">Affitto</Link>
+              <Link to="/valuta-il-tuo-immobile" className="px-4 py-3 rounded-xl border border-[var(--border-primary)] hover:border-[#A18058] text-[11px] font-bold uppercase tracking-widest">Valutazione</Link>
+              <Link to="/brochure-and-magazine" className="px-4 py-3 rounded-xl border border-[var(--border-primary)] hover:border-[#A18058] text-[11px] font-bold uppercase tracking-widest">Brochure</Link>
+            </div>
           </div>
 
-          {/* Company Column */}
-          <div className="md:col-span-3 lg:col-span-2">
-            <h4 className="font-bold text-[var(--text-primary)] text-[10px] uppercase tracking-[0.2em] mb-8 relative inline-block">
-              Azienda
-              <span className="absolute -bottom-2 left-0 w-8 h-[1px] bg-[#A18058]"></span>
-            </h4>
-            <ul className="space-y-4">
-              <li>
-                <Link to="/chi-siamo" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:translate-x-1 transition-all duration-300">
-                  Chi Siamo
-                </Link>
-              </li>
-              <li>
-                <Link to="/chi-siamo#team" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:translate-x-1 transition-all duration-300">
-                  Team
-                </Link>
-              </li>
-              <li>
-                <Link to="/chi-siamo#lavora-con-noi" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:translate-x-1 transition-all duration-300">
-                  Lavora con noi
-                </Link>
-              </li>
-              <li>
-                <Link to="/chi-siamo#contatti" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:translate-x-1 transition-all duration-300">
-                  Contatti
-                </Link>
-              </li>
-            </ul>
+          <div className="md:col-span-4 space-y-4">
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-tertiary)]">Aggiornamenti</h4>
+            <div className="rounded-2xl border border-[var(--border-primary)] p-4 bg-[var(--bg-primary)]">
+              <p className="text-xs text-[var(--text-secondary)] mb-3">Novità su asset e collezioni private.</p>
+              <div className="flex gap-2">
+                <input placeholder="Email" className="flex-1 h-11 px-4 rounded-xl border border-[var(--border-primary)] bg-[var(--bg-secondary)] text-[var(--text-primary)]" />
+                <button className="px-5 rounded-xl bg-[#A18058] text-white text-[11px] font-bold uppercase tracking-widest hover:bg-[var(--text-primary)]">Iscriviti</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-[var(--border-primary)] pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">© 2026 Immobiliare Tala S.r.l.</span>
-          <div className="flex gap-8">
-            <a href="#" className="text-[9px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] font-bold uppercase tracking-widest transition-colors">Privacy Policy</a>
-            <a href="#" className="text-[9px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] font-bold uppercase tracking-widest transition-colors">Termini</a>
-            <a href="#" className="text-[9px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] font-bold uppercase tracking-widest transition-colors">Cookie</a>
+        <div className="pt-10 mt-10 border-t border-[var(--border-primary)] flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">© 2026 Immobiliare Tala</p>
+          <div className="flex gap-6 text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">
+            <a href="#" className="hover:text-[var(--text-primary)]">Privacy</a>
+            <a href="#" className="hover:text-[var(--text-primary)]">Termini</a>
+            <a href="#" className="hover:text-[var(--text-primary)]">Cookie</a>
           </div>
         </div>
       </div>

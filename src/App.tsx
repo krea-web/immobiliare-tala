@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Chatbot from './components/Chatbot';
+import WhatsAppFAB from './components/WhatsAppFAB';
 import Home from './pages/Home';
 import About from './pages/About';
 import Sales from './pages/Sales';
@@ -11,6 +11,8 @@ import Valuation from './pages/Valuation';
 import ReservedArea from './pages/ReservedArea';
 import Booking from './pages/Booking';
 import StayBooking from './pages/StayBooking';
+import BrochureAndMagazine from './pages/BrochureAndMagazine';
+import PlaceGuide from './pages/PlaceGuide';
 import Admin from './pages/Admin';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -49,12 +51,15 @@ const App: React.FC = () => {
               <Route path="/area-riservata" element={<ReservedArea />} />
               <Route path="/prenota" element={<StayBooking />} />
               <Route path="/prenota-una-visita" element={<Booking />} />
+              <Route path="/brochure-and-magazine" element={<BrochureAndMagazine />} />
+              <Route path="/localita/:slug" element={<PlaceGuide />} />
+              <Route path="/spiaggia/:slug" element={<PlaceGuide />} />
               <Route path="/admin" element={<Admin />} />
             </Routes>
           </main>
 
           <Footer />
-          <Chatbot onNavigate={handleChatbotNavigate} />
+          <WhatsAppFAB />
         </div>
       </FavoritesProvider>
     </ThemeProvider>

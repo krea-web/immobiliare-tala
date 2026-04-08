@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 import { useTheme } from '../context/ThemeContext';
+import { Link } from 'react-router-dom';
 
 interface ReservedAreaProps {
   onClose?: () => void;
@@ -218,6 +219,12 @@ export default function ReservedArea({ onClose, initialSection = 'profile', onNa
         </nav>
 
         <div className="p-6 lg:p-8 space-y-4 border-t border-[var(--border-primary)]">
+           <Link 
+             to="/admin"
+             className="w-full flex items-center justify-center gap-3 p-4 bg-[#A18058] text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+           >
+             Admin
+           </Link>
            <button 
              onClick={toggleTheme} 
              className="w-full flex items-center justify-between p-4 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] rounded-2xl transition-all hover:bg-[var(--bg-secondary)]"
@@ -621,16 +628,7 @@ export default function ReservedArea({ onClose, initialSection = 'profile', onNa
 
           </div>
 
-          <footer className="mt-40 pt-20 border-t border-[var(--border-primary)] flex flex-col items-center">
-             <div className="w-16 h-16 bg-[#1C1917] dark:bg-[#A18058] text-white flex items-center justify-center rounded-lg shadow-2xl mb-8 group hover:scale-110 transition-transform">
-                <span className="font-serif italic text-2xl pr-0.5">T</span>
-             </div>
-             <p className="text-[11px] text-[var(--text-tertiary)] font-bold uppercase tracking-[0.4em] mb-4">© 2025 Immobiliare Tala • Exclusive Sardinia Real Estate</p>
-             <div className="flex gap-8 text-[9px] uppercase font-bold tracking-widest text-[var(--text-tertiary)]">
-                <a href="#" className="hover:text-[#A18058]">Privacy Policy</a>
-                <a href="#" className="hover:text-[#A18058]">Supporto d'Elite</a>
-             </div>
-          </footer>
+          <footer className="mt-24"></footer>
           
         </div>
       </main>
